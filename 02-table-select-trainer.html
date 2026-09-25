@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажер 2 · Групуй і відбирай — Tables</title>
+<style>
+:root{
+  --bg:#F7F5EC; --card:#FFFFFF; --ink:#22271E; --muted:#6E7468; --line:#E4E1D2;
+  --green:#1E5631; --green-soft:#E9F2E4;
+  --lime:#84CC16; --lime-soft:#F2F9E0;
+  --yellow:#FDE047;
+  --orange:#E8890C; --orange-soft:#FCF1DE;
+  --red:#B3402E; --red-soft:#F8E9E5;
+  --purple:#7A5AA0; --purple-soft:#F1ECF7;
+  --blue:#2E5A88;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; font-size:16.5px; line-height:1.6; padding:24px 16px 60px;}
+.wrap{max-width:980px; margin:0 auto;}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif; color:var(--green); line-height:1.25;}
+h1{font-size:30px; margin-bottom:6px;}
+h2{font-size:22px; margin:36px 0 14px;}
+h3{font-size:18px; margin:18px 0 10px;}
+.sub{color:var(--muted); font-size:14.5px; margin-bottom:20px;}
+mark{background:var(--yellow); padding:0 3px; border-radius:2px;}
+.bc{font-size:13px; color:var(--muted); margin-bottom:14px;}
+.bc b{color:var(--green);}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(30,60,30,.05);}
+.step-tag{display:inline-block; font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); background:var(--orange-soft); border:1px solid var(--orange); border-radius:20px; padding:3px 12px; margin-bottom:10px;}
+.instr{background:var(--green-soft); border:1.5px solid var(--green); border-radius:12px; padding:14px 16px; margin:12px 0; font-size:15.5px;}
+.instr .lbl{display:block; font-size:12px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--green); margin-bottom:6px;}
+.rule-step{background:var(--card); border:1.5px solid var(--lime); border-radius:12px; padding:13px 16px; margin-bottom:10px; font-size:15.5px;}
+.rule-step b{color:var(--green);}
+.btn{display:inline-block; border:none; border-radius:10px; padding:11px 18px; font-size:14.5px; font-weight:600; cursor:pointer; margin:6px 6px 0 0; font-family:inherit;}
+.btn-primary{background:var(--green); color:#fff;}
+.btn-ghost{background:transparent; border:1.5px solid var(--green); color:var(--green);}
+.btn-solution{background:transparent; border:1.5px solid var(--orange); color:var(--orange);}
+.btn-reset{background:transparent; border:1.5px solid var(--line); color:var(--muted);}
+.btn:hover{opacity:.85;}
+.opt{display:flex; gap:12px; align-items:flex-start; padding:14px 15px; border:1.5px solid var(--line); border-radius:10px; margin-bottom:9px; cursor:pointer; font-size:16.5px; line-height:1.5; background:var(--card);}
+.opt:hover{border-color:var(--green);}
+.opt input{margin-top:5px; accent-color:var(--green); flex-shrink:0; width:18px; height:18px;}
+.opt.ok{border-color:var(--green); background:var(--green-soft);}
+.opt.bad{border-color:var(--red); background:var(--red-soft);}
+.pool{min-height:56px; border:1.5px dashed var(--line); border-radius:12px; padding:12px; margin-bottom:12px; background:#FBFAF4;}
+.pool-label{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+.line-chip{display:inline-block; padding:10px 18px; border:1.5px solid var(--line); border-radius:10px; margin:0 8px 8px 0; cursor:pointer; font-size:15.5px; font-weight:600; background:var(--card); user-select:none;}
+.line-chip.picked{border-color:var(--lime); background:var(--lime-soft); box-shadow:0 0 0 2px var(--lime);}
+.placed{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:10px; margin:0 8px 8px 0; font-size:15px; font-weight:600; color:#fff;}
+.placed.b1{background:var(--green);}
+.placed.b2{background:var(--blue);}
+.placed .x{cursor:pointer; font-weight:700; opacity:.85;}
+.cols{display:flex; gap:14px; margin-top:6px;}
+.col{flex:1; border:2px dashed var(--line); border-radius:12px; padding:14px; min-height:110px; cursor:pointer;}
+.col h4{font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-bottom:10px; font-family:inherit; pointer-events:none;}
+.col.c1{border-color:var(--green); background:var(--green-soft);}
+.col.c2{border-color:var(--blue); background:#EDF3F9;}
+.fb{margin-top:12px; font-size:15px; font-weight:600;}
+.rule{background:var(--lime-soft); border:1.5px solid var(--lime); border-radius:14px; padding:18px 20px; margin:28px 0;}
+.rule h3{margin-top:0;}
+.rule li{margin:7px 0 7px 18px;}
+.divider{border:none; border-top:2px dashed var(--line); margin:36px 0;}
+.small{font-size:13.5px; color:var(--muted);}
+.tbl-box{overflow-x:auto; margin:12px 0;}
+table.tbl{width:100%; border-collapse:collapse; font-size:14.5px; background:#fff; min-width:460px;}
+.tbl th{background:var(--green-soft); color:var(--green); font-weight:600; padding:9px 12px; border:1px solid var(--line); text-align:center;}
+.tbl th:first-child{text-align:left;}
+.tbl td{padding:8px 12px; border:1px solid var(--line); text-align:center; font-variant-numeric:tabular-nums;}
+.tbl td:first-child{text-align:left; font-weight:600;}
+.tbl tr:nth-child(even) td{background:#FBFAF4;}
+td.cell{cursor:pointer; user-select:none;}
+td.cell.keep{background:var(--green-soft); box-shadow:inset 0 0 0 2px var(--green); font-weight:700;}
+td.cell.wrongkeep{background:var(--red-soft); box-shadow:inset 0 0 0 2px var(--red);}
+td.cell.missed{background:var(--orange-soft); box-shadow:inset 0 0 0 2px var(--orange);}
+@media (max-width:640px){
+  body{padding:16px 10px 44px; font-size:15.5px;}
+  h1{font-size:24px;} h2{font-size:19px;}
+  .card{padding:14px;}
+  .opt{font-size:15.5px; padding:12px;}
+  .btn{padding:12px 16px;}
+  .cols{flex-direction:column;}
+  table.tbl{font-size:13px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="bc">Модуль 4 · Tables → <b>Тренажер 2 з 4</b></div>
+<h1>Групуй і відбирай</h1>
+<p class="sub">Два навички, яких таблиці вимагають особливо: <mark>групування рядків</mark> і <mark>відбір клітинок</mark>. Тут ти навчишся викидати зайве.</p>
+
+<div class="card">
+  <span class="step-tag">Навіщо це</span>
+  <p>У графіку важливе видно неозброєним оком. У таблиці всі числа рівні — і мозок тягне переписати все. Екзаменатор оцінює <b>відбір</b>: ~половина клітинок має залишитися поза текстом.</p>
+</div>
+
+<div class="instr">
+  <span class="lbl">Правило відбору — 4 кроки</span>
+  <div class="rule-step"><b>БЕРИ екстремуми:</b> найвищу й найнижчу клітинку в кожному рядку — вони якорять порівняння.</div>
+  <div class="rule-step"><b>БЕРИ винятки:</b> будь-який рядок, що ламає загальний тренд, — це найцікавіша історія таблиці.</div>
+  <div class="rule-step"><b>БЕРИ великі розриви:</b> клітинки, де різниця між групами вражає, — матеріал для множника.</div>
+  <div class="rule-step"><b>ВИКИДАЙ середню смугу:</b> клітинки без історії (ні екстремум, ні виняток, ні розрив) — не трать на них слова.</div>
+</div>
+
+<!-- ================= ЗАВДАННЯ 1: ГРУПУВАННЯ РЯДКІВ ================= -->
+<div class="card" id="g1">
+  <h3>Завдання 1 · Згрупуй рядки таблиці фастфоду</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>meals/week</th><th>18–24</th><th>25–39</th><th>40–54</th><th>55–70</th></tr><tr><td>Burgers</td><td>3.1</td><td>2.4</td><td>1.6</td><td>0.8</td></tr><tr><td>Pizza</td><td>2.8</td><td>2.5</td><td>1.9</td><td>1.2</td></tr><tr><td>Fried chicken</td><td>2.2</td><td>1.4</td><td>0.9</td><td>0.5</td></tr><tr><td>Sushi</td><td>1.8</td><td>1.2</td><td>0.5</td><td>0.2</td></tr><tr><td>Salads</td><td>0.9</td><td>1.5</td><td>2.2</td><td>2.8</td></tr></table><div class="tbl-caption">Takeaway meals per week, by age group, UK 2023</div></div>
+  <div class="instr"><span class="lbl">Інструкція · крок 1</span>Обери принцип групування цих п'яти рядків.</div>
+  <div class="opts"></div>
+  <button class="btn btn-primary" onclick="checkPrinciple('g1')">Перевірити принцип</button>
+  <div class="fb" id="pfb-g1"></div>
+  <div class="instr"><span class="lbl">Інструкція · крок 2</span>Розподіли рядки по колонках: клікни по рядок → клікни по колонці.</div>
+  <div class="pool"><div class="pool-label">Рядки (нeroзподілені)</div><div class="chips"></div></div>
+  <div class="cols">
+    <div class="col c1" onclick="place('g1',1)"><h4>Body 1</h4><div class="items" id="c1-g1"></div></div>
+    <div class="col c2" onclick="place('g1',2)"><h4>Body 2 · In contrast, …</h4><div class="items" id="c2-g1"></div></div>
+  </div>
+  <button class="btn btn-ghost" onclick="checkGroups('g1')">Перевірити групування</button>
+  <button class="btn btn-reset" onclick="resetGroups('g1')">Скинути все</button>
+  <div class="fb" id="gfb-g1"></div>
+</div>
+
+<!-- ================= ЗАВДАННЯ 2: ВІДБІР КЛІТИНОК ================= -->
+<div class="card" id="sel">
+  <h3>Завдання 2 · Відбір клітинок (навик, якого немає в жодному іншому типі)</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>% active weekly</th><th>18–24</th><th>25–34</th><th>35–49</th><th>50–65</th></tr><tr><td>Content creation (YouTube, TikTok)</td><td>22</td><td>14</td><td>6</td><td>2</td></tr><tr><td>Online selling (eBay, Etsy)</td><td>18</td><td>20</td><td>17</td><td>9</td></tr><tr><td>Food delivery driving</td><td>15</td><td>11</td><td>4</td><td>1</td></tr><tr><td>Freelance services</td><td>9</td><td>14</td><td>12</td><td>6</td></tr><tr><td>Pet & house sitting</td><td>3</td><td>5</td><td>8</td><td>10</td></tr></table><div class="tbl-caption">Weekly participation in gig-economy work, by age group, USA 2023 (%)</div></div>
+  <div class="instr"><span class="lbl">Інструкція</span>Твій overview: «молоді домінують у видимих онлайн-гігах; pet sitting фліпається на старших; online selling — без чіткого лідера». <b>Клікни лише ті клітинки, які візьмеш у відповідь</b> (екстремуми, винятки, великі розриви). Ціль: близько половини з 20. Потім натисни «Перевірити відбір».</div>
+  <table class="tbl" id="seltable" style="margin-top:8px;"></table>
+  <button class="btn btn-primary" onclick="checkSel()">Перевірити відбір</button>
+  <button class="btn btn-reset" onclick="resetSel()">Спробувати ще</button>
+  <div class="fb" id="selfb"></div>
+</div>
+
+<!-- ================= ЗАВДАННЯ 3: ДАТОВАНА ТАБЛИЦЯ ================= -->
+<div class="card" id="g3">
+  <h3>Завдання 3 · Групування датованої таблиці (смартфони, 2013 vs 2023)</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>% of owners, daily</th><th>2013</th><th>2023</th></tr><tr><td>Making phone calls</td><td>95</td><td>78</td></tr><tr><td>Sending text messages</td><td>88</td><td>70</td></tr><tr><td>Social media</td><td>41</td><td>82</td></tr><tr><td>Mobile payments</td><td>3</td><td>64</td></tr><tr><td>Mobile gaming</td><td>25</td><td>48</td></tr></table><div class="tbl-caption">Daily smartphone activities, 2013 and 2023 (%)</div></div>
+  <div class="instr"><span class="lbl">Інструкція · крок 1</span>Тут дві колонки-дати. За чим групувати рядки?</div>
+  <div class="opts"></div>
+  <button class="btn btn-primary" onclick="checkPrinciple('g3')">Перевірити принцип</button>
+  <div class="fb" id="pfb-g3"></div>
+  <div class="instr"><span class="lbl">Інструкція · крок 2</span>Розподіли рядки по колонках.</div>
+  <div class="pool"><div class="pool-label">Рядки (нeroзподілені)</div><div class="chips"></div></div>
+  <div class="cols">
+    <div class="col c1" onclick="place('g3',1)"><h4>Body 1</h4><div class="items" id="c1-g3"></div></div>
+    <div class="col c2" onclick="place('g3',2)"><h4>Body 2 · in contrast, …</h4><div class="items" id="c2-g3"></div></div>
+  </div>
+  <button class="btn btn-ghost" onclick="checkGroups('g3')">Перевірити групування</button>
+  <button class="btn btn-reset" onclick="resetGroups('g3')">Скинути все</button>
+  <div class="fb" id="gfb-g3"></div>
+</div>
+
+<div class="rule">
+  <h3>Підсумок тренажера · що ти тепер вмієш</h3>
+  <ul>
+    <li>Групувати рядки за поведінкою (молодіжні / фліп / без поділу), а не за порядком у таблиці.</li>
+    <li><mark>Відбирати клітинки</mark>: екстремуми + винятки + великі розриви в текст; середню смугу — за борт.</li>
+    <li>Датовані таблиці групувати за напрямком зміни (що падає / що росте).</li>
+  </ul>
+  <p class="small" style="margin-top:10px;">Навіщо це далі: у Тренажері 3 ти напишеш кожну частину відповіді — з особливою увагою до групуючих структур (respectively, intermediate figures) і мови винятків.</p>
+</div>
+
+</div>
+
+<script>
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+const GROUPS = {
+  g1: {
+    lines:["Burgers","Pizza","Fried chicken","Sushi","Salads"],
+    correct:{ "Burgers":1, "Pizza":1, "Fried chicken":1, "Sushi":1, "Salads":2 },
+    principles: shuffle([
+      { t:"За порядком рядків: перші чотири / останній", ok:false, w:"Тут співпадіння випадкове: порядок у таблиці не логіка. Запитай «хто проти кого?»." },
+      { t:"За поведінкою: молодіжний фастфуд (падає за віком) / салати (фліп)", ok:true, w:"Вірно: чотири рядки йдуть вниз за віком, салати — вгору. Дві історії = два абзаци." },
+      { t:"За алфавітом: Burgers + Fried chicken / Pizza + Salads + Sushi", ok:false, w:"Абетка — не логіка." },
+      { t:"Найпопулярніші / найменш популярні", ok:false, w:"Популярність змінюється за віком — таке ділення розвалиться в body." }
+    ]),
+    okMsg:"✓ Вірно. Body 1 = бургери, піца, курка, суші (молоді лідирують, розрив найгостріший у суші: 1.8 vs 0.2 — «nine times the figure»). Body 2 = салати — «told the opposite story», пік у 55–70 (2.8).",
+    badMsg:"Подумай ще: які чотири рядки поводяться однаково, а один — навпаки? Саме це ділить абзаци."
+  },
+  g3: {
+    lines:["Making phone calls","Sending text messages","Social media","Mobile payments","Mobile gaming"],
+    correct:{ "Making phone calls":1, "Sending text messages":1, "Social media":2, "Mobile payments":2, "Mobile gaming":2 },
+    principles: shuffle([
+      { t:"За порядком рядків: перші два / останні три", ok:false, w:"Випадковість. Дві дати вимагають питання «що змінилося і в який бік?»." },
+      { t:"За напрямком зміни: що скоротилось (дзвінки, SMS) / що виросло (соцмережі, платежі, геймінг)", ok:true, w:"Вірно: старе спілкування падає, нове вибухає. Це і є дві історії десятиліття." },
+      { t:"2013 спочатку / 2023 потім", ok:false, w:"Групування за датою змусить повторювати цифри двічі — це переказ." },
+      { t:"За алфавітом", ok:false, w:"Абетка — не логіка." }
+    ]),
+    okMsg:"✓ Вірно. Body 1 = calls (95→78) і texts (88→70) — «the old gives way to the new». Body 2 = social media (41→82), payments (3→64 — «a more than twenty-fold increase»), gaming (25→48). Тренди легальні — два роки!",
+    badMsg:"Ще раз: поділи рядки за напрямком зміни між 2013 і 2023. Хто падає? Хто росте?"
+  }
+};
+
+const state = {}; let picked = {};
+function initGroups(){
+  Object.keys(GROUPS).forEach(gid=>{
+    const g = GROUPS[gid];
+    state[gid]={}; picked[gid]=null;
+    document.querySelector('#'+gid+' .opts').innerHTML = g.principles.map((p,i)=>
+      '<label class="opt" id="po-'+gid+'-'+i+'"><input type="radio" name="pr-'+gid+'" id="pr-'+gid+'-'+i+'"><span>'+p.t+'</span></label>').join('');
+    renderGroup(gid);
+  });
+}
+function renderGroup(gid){
+  const g = GROUPS[gid];
+  let poolHtml='', h1='', h2='';
+  g.lines.forEach((l,i)=>{
+    const place = state[gid][i]||0;
+    if(place===0){ poolHtml += '<span class="line-chip'+(picked[gid]===i?' picked':'')+'" onclick="pickLine(\''+gid+'\','+i+')">'+l+'</span>'; }
+    else if(place===1){ h1 += '<span class="placed b1">'+l+' <span class="x" onclick="unplace(\''+gid+'\','+i+')" title="Повернути">✕</span></span>'; }
+    else { h2 += '<span class="placed b2">'+l+' <span class="x" onclick="unplace(\''+gid+'\','+i+')" title="Повернути">✕</span></span>'; }
+  });
+  document.querySelector('#'+gid+' .chips').innerHTML = poolHtml || '<span class="small">усі розподілено</span>';
+  document.getElementById('c1-'+gid).innerHTML = h1 || '<span class="small">порожньо</span>';
+  document.getElementById('c2-'+gid).innerHTML = h2 || '<span class="small">порожньо</span>';
+  return g.lines.filter((l,i)=>(state[gid][i]||0)===0).length;
+}
+function pickLine(gid,i){ picked[gid]=(picked[gid]===i)?null:i; renderGroup(gid); }
+function place(gid,col){ if(picked[gid]===null) return; state[gid][picked[gid]]=col; picked[gid]=null; renderGroup(gid); }
+function unplace(gid,i){ state[gid][i]=0; renderGroup(gid); }
+function resetGroups(gid){ GROUPS[gid].lines.forEach((l,i)=>state[gid][i]=0); picked[gid]=null; renderGroup(gid); document.getElementById('gfb-'+gid).innerHTML=''; }
+function revealGroups(gid){
+  const g=GROUPS[gid];
+  g.lines.forEach((l,i)=>state[gid][i]=g.correct[l]);
+  picked[gid]=null; renderGroup(gid);
+  document.getElementById('gfb-'+gid).innerHTML='<span style="color:var(--green)">'+g.okMsg+'</span><div class="small" style="margin-top:6px;">Ось правильний розподіл. Прочитай пояснення і спробуй пояснити різницю своїми словами.</div>';
+}
+function checkPrinciple(gid){
+  const g = GROUPS[gid]; let answered=false;
+  g.principles.forEach((p,i)=>{
+    const lab=document.getElementById('po-'+gid+'-'+i);
+    lab.classList.remove('ok','bad');
+    if(document.getElementById('pr-'+gid+'-'+i).checked){
+      answered=true; lab.classList.add(p.ok?'ok':'bad');
+      document.getElementById('pfb-'+gid).innerHTML='<span style="color:'+(p.ok?'var(--green)':'var(--red)')+'">'+(p.ok?'✓ ':'✗ ')+p.w+'</span>';
+    }
+  });
+  if(!answered){ document.getElementById('pfb-'+gid).innerHTML='<span style="color:var(--red)">Спочатку обери один із варіантів.</span>'; }
+}
+function checkGroups(gid){
+  const g = GROUPS[gid];
+  const un = renderGroup(gid);
+  const fb = document.getElementById('gfb-'+gid);
+  if(un>0){ fb.innerHTML='<span style="color:var(--red)">Є рядки без абзацу — розподіли всі.</span>'; return; }
+  let allOk=true;
+  g.lines.forEach((l,i)=>{ if((state[gid][i]||0)!==g.correct[l]) allOk=false; });
+  if(allOk){ fb.innerHTML='<span style="color:var(--green)">'+g.okMsg+'</span>'; }
+  else { fb.innerHTML='<span style="color:var(--red)">'+g.badMsg+'</span> <button class="btn btn-solution" style="margin-top:8px;" onclick="revealGroups(\''+gid+'\')">Показати правильний розподіл</button>'; }
+}
+
+/* ---- завдання 2: відбір клітинок ---- */
+const SEL_HEAD = ['% active weekly','18–24','25–34','35–49','50–65'];
+const SEL_ROWS = [
+  ['Content creation', 22,14,6,2],
+  ['Online selling', 18,20,17,9],
+  ['Food delivery driving', 15,11,4,1],
+  ['Freelance services', 9,14,12,6],
+  ['Pet & house sitting', 3,5,8,10]
+];
+// клітинки, які треба взяти: [row, col] (екстремуми, винятки, великі розриви)
+const SEL_KEEP = [[0,0],[0,3],[1,0],[1,1],[1,3],[2,0],[2,3],[3,1],[4,0],[4,3]];
+const pickedCells = new Set();
+
+function initSel(){
+  let html = '<tr><th>'+SEL_HEAD[0]+'</th>'+SEL_HEAD.slice(1).map(h=>'<th>'+h+'</th>').join('')+'</tr>';
+  SEL_ROWS.forEach((r,ri)=>{
+    html += '<tr><td>'+r[0]+'</td>'+r.slice(1).map((v,ci)=>'<td class="cell" id="cell-'+ri+'-'+ci+'" onclick="toggleCell('+ri+','+ci+')">'+v+'</td>').join('')+'</tr>';
+  });
+  document.getElementById('seltable').innerHTML = html;
+}
+function toggleCell(ri,ci){
+  const id='cell-'+ri+'-'+ci, el=document.getElementById(id);
+  if(pickedCells.has(id)){ pickedCells.delete(id); el.classList.remove('keep'); }
+  else { pickedCells.add(id); el.classList.add('keep'); }
+}
+function checkSel(){
+  let hit=0, wrong=0, missed=0;
+  SEL_ROWS.forEach((r,ri)=>r.slice(1).forEach((v,ci)=>{
+    const id='cell-'+ri+'-'+ci, el=document.getElementById(id);
+    const should = SEL_KEEP.some(k=>k[0]===ri&&k[1]===ci);
+    const is = pickedCells.has(id);
+    el.classList.remove('wrongkeep','missed');
+    if(is && should){ hit++; }
+    else if(is && !should){ wrong++; el.classList.add('wrongkeep'); }
+    else if(!is && should){ missed++; el.classList.add('missed'); }
+  }));
+  const fb = document.getElementById('selfb');
+  let msg = '<span style="color:var(--green)">Взято правильно: '+hit+' з '+SEL_KEEP.length+'.</span> ';
+  if(wrong>0) msg += '<span style="color:var(--red)">Зайві: '+wrong+' (червоні — середня смуга без історії).</span> ';
+  if(missed>0) msg += '<span style="color:var(--orange)">Пропущено: '+missed+' (помаранчеві — важливі!).</span>';
+  if(hit>=8 && wrong<=1 && missed<=2){ msg += '<div class="small" style="margin-top:6px;">✓ Це рівень відбору Band 7+: 10 клітинок з 20, і кожна з історією. Решта — дзеркально передбачувана, екзаменатор її і так знає.</div>'; }
+  else { msg += '<div class="small" style="margin-top:6px;">Правило: БЕРИ екстремуми (макс/мін у рядку), винятки (pet sitting!), великі розриви. ВИКИДАЙ середню смугу.</div>'; }
+  fb.innerHTML = msg;
+}
+function resetSel(){
+  pickedCells.clear();
+  SEL_ROWS.forEach((r,ri)=>r.slice(1).forEach((v,ci)=>{ const el=document.getElementById('cell-'+ri+'-'+ci); el.classList.remove('keep','wrongkeep','missed'); }));
+  document.getElementById('selfb').innerHTML='';
+}
+
+initGroups();
+initSel();
+</script>
+</body>
+</html>

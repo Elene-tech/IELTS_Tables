@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажер 1 · Навчись бачити — Tables</title>
+<style>
+:root{
+  --bg:#F7F5EC; --card:#FFFFFF; --ink:#22271E; --muted:#6E7468; --line:#E4E1D2;
+  --green:#1E5631; --green-soft:#E9F2E4;
+  --lime:#84CC16; --lime-soft:#F2F9E0;
+  --yellow:#FDE047;
+  --orange:#E8890C; --orange-soft:#FCF1DE;
+  --red:#B3402E; --red-soft:#F8E9E5;
+  --purple:#7A5AA0; --purple-soft:#F1ECF7;
+  --blue:#2E5A88;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; font-size:16.5px; line-height:1.6; padding:24px 16px 60px;}
+.wrap{max-width:980px; margin:0 auto;}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif; color:var(--green); line-height:1.25;}
+h1{font-size:30px; margin-bottom:6px;}
+h2{font-size:22px; margin:36px 0 14px;}
+h3{font-size:18px; margin:20px 0 10px;}
+.sub{color:var(--muted); font-size:14.5px; margin-bottom:20px;}
+mark{background:var(--yellow); padding:0 3px; border-radius:2px;}
+.bc{font-size:13px; color:var(--muted); margin-bottom:14px;}
+.bc b{color:var(--green);}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(30,60,30,.05);}
+.step-tag{display:inline-block; font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); background:var(--orange-soft); border:1px solid var(--orange); border-radius:20px; padding:3px 12px; margin-bottom:10px;}
+.instr{background:var(--green-soft); border:1.5px solid var(--green); border-radius:12px; padding:14px 16px; margin:12px 0; font-size:15.5px;}
+.instr .lbl{display:block; font-size:12px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--green); margin-bottom:6px;}
+.btn{display:inline-block; border:none; border-radius:10px; padding:11px 18px; font-size:14.5px; font-weight:600; cursor:pointer; margin:6px 6px 0 0; font-family:inherit;}
+.btn-primary{background:var(--green); color:#fff;}
+.btn-hint{background:transparent; border:1.5px solid var(--purple); color:var(--purple);}
+.btn-solution{background:transparent; border:1.5px solid var(--orange); color:var(--orange);}
+.btn-reset{background:transparent; border:1.5px solid var(--line); color:var(--muted);}
+.btn:hover{opacity:.85;}
+.opt{display:flex; gap:12px; align-items:flex-start; padding:14px 15px; border:1.5px solid var(--line); border-radius:10px; margin-bottom:9px; cursor:pointer; font-size:16.5px; line-height:1.5; background:var(--card);}
+.opt:hover{border-color:var(--green);}
+.opt input{margin-top:5px; accent-color:var(--green); flex-shrink:0; width:18px; height:18px;}
+.opt .why{display:none; font-size:14.5px; margin-top:6px; line-height:1.5;}
+.opt.ok{border-color:var(--green); background:var(--green-soft);}
+.opt.ok .why{display:block; color:var(--green);}
+.opt.bad{border-color:var(--red); background:var(--red-soft);}
+.opt.bad .why{display:block; color:var(--red);}
+textarea{width:100%; border:1.5px solid var(--line); border-radius:10px; padding:13px 15px; font-size:16px; font-family:inherit; background:var(--card); color:var(--ink); resize:vertical;}
+textarea:focus{outline:none; border-color:var(--green);}
+.hint-box{margin-top:14px; font-size:15px;}
+.hint-box .h{border-left:3px solid var(--purple); background:var(--purple-soft); padding:11px 15px; border-radius:0 8px 8px 0; margin-bottom:9px;}
+.hint-box .s{border-left:3px solid var(--orange); background:var(--orange-soft); padding:11px 15px; border-radius:0 8px 8px 0;}
+.wc{font-size:13px; color:var(--muted); margin-top:6px;}
+.rule{background:var(--lime-soft); border:1.5px solid var(--lime); border-radius:14px; padding:18px 20px; margin:28px 0;}
+.rule h3{margin-top:0;}
+.rule li{margin:7px 0 7px 18px;}
+.fb{margin-top:10px; font-size:15px; font-weight:600;}
+.fb.good{color:var(--green);} .fb.bad{color:var(--red);}
+.divider{border:none; border-top:2px dashed var(--line); margin:36px 0;}
+.small{font-size:13.5px; color:var(--muted);}
+.tbl-box{overflow-x:auto; margin:12px 0;}
+table.tbl{width:100%; border-collapse:collapse; font-size:14.5px; background:#fff; min-width:420px;}
+.tbl th{background:var(--green-soft); color:var(--green); font-weight:600; padding:9px 12px; border:1px solid var(--line); text-align:center;}
+.tbl th:first-child{text-align:left;}
+.tbl td{padding:8px 12px; border:1px solid var(--line); text-align:center; font-variant-numeric:tabular-nums;}
+.tbl td:first-child{text-align:left; font-weight:600; color:var(--ink);}
+.tbl tr:nth-child(even) td{background:#FBFAF4;}
+.tbl-caption{font-size:13px; color:var(--muted); text-align:center; margin-top:6px;}
+@media (max-width:640px){
+  body{padding:16px 10px 44px; font-size:15.5px;}
+  h1{font-size:24px;} h2{font-size:19px;}
+  .card{padding:14px;}
+  .opt{font-size:15.5px; padding:12px;}
+  .btn{padding:12px 16px;}
+  table.tbl{font-size:13px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="bc">Модуль 4 · Tables → <b>Тренажер 1 з 4</b></div>
+<h1>Навчись бачити</h1>
+<p class="sub">Йдемо від простого до складного. Головна навичка таблиць — <mark>відбір</mark>: екзаменатор оцінює не переписування, а те, що ти обрав.</p>
+
+<div class="card">
+  <span class="step-tag">Правило №1 модуля</span>
+  <p>Таблиця — це не список для переписування. У таблиці 20–25 клітинок — у відповідь ідуть <mark>8–10</mark>. Кожну клітинку питай: «Чи підтримуєш ти мій overview або мій виняток?» Ні — залишаємо. І порахуй дати: один рік → past simple без трендів; два роки → тренди легальні.</p>
+</div>
+
+<div class="instr">
+  <span class="lbl">Як проходити цей тренажер</span>
+  <b>Частина А (завдання 1–3):</b> від простої таблиці (8 клітинок) до складної (25). Познач рівно <b>два</b> твердження для overview.<br>
+  <b>Частина Б (завдання 4–5):</b> напиши дві історії сам; підказки — по одній. Зверни увагу на десяткові числа і на таблицю з двома датами — вона працює інакше.
+</div>
+
+<h2>Частина А · Обери дві історії (від простого до складного)</h2>
+
+<div class="card" id="t1">
+  <h3>Завдання 1 · Проста: їжа вдома vs доставка, дві вікові групи, 2023</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>Activity · hrs/week</th><th>18–30 year olds</th><th>55–70 year olds</th></tr><tr><td>Cooking at home</td><td>3.5</td><td>8.2</td></tr><tr><td>Ordering takeaway</td><td>6.8</td><td>1.9</td></tr><tr><td>Online grocery shopping</td><td>4.1</td><td>2.2</td></tr><tr><td>Meal-kit services</td><td>1.2</td><td>0.3</td></tr></table><div class="tbl-caption">Weekly hours spent on food-related activities, by age group, UK 2023</div></div>
+  <div class="opts" data-task="t1"></div>
+  <button class="btn btn-primary" onclick="check('t1')">Перевірити</button>
+  <button class="btn btn-reset" onclick="resetMCQ('t1')">Спробувати ще</button>
+  <div class="fb" id="fb-t1"></div>
+</div>
+
+<div class="card" id="t2">
+  <h3>Завдання 2 · Середня: гіг-економіка, чотири вікові групи, 2023</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>% active weekly</th><th>18–24</th><th>25–34</th><th>35–49</th><th>50–65</th></tr><tr><td>Content creation (YouTube, TikTok)</td><td>22</td><td>14</td><td>6</td><td>2</td></tr><tr><td>Online selling (eBay, Etsy)</td><td>18</td><td>20</td><td>17</td><td>9</td></tr><tr><td>Food delivery driving</td><td>15</td><td>11</td><td>4</td><td>1</td></tr><tr><td>Freelance services</td><td>9</td><td>14</td><td>12</td><td>6</td></tr><tr><td>Pet & house sitting</td><td>3</td><td>5</td><td>8</td><td>10</td></tr></table><div class="tbl-caption">Weekly participation in gig-economy work, by age group, USA 2023 (%)</div></div>
+  <div class="opts" data-task="t2"></div>
+  <button class="btn btn-primary" onclick="check('t2')">Перевірити</button>
+  <button class="btn btn-reset" onclick="resetMCQ('t2')">Спробувати ще</button>
+  <div class="fb" id="fb-t2"></div>
+</div>
+
+<div class="card" id="t3">
+  <h3>Завдання 3 · Складна: музичні формати, п'ять країн, 2023</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>Format · %</th><th>USA</th><th>UK</th><th>Germany</th><th>Japan</th><th>Brazil</th></tr><tr><td>Streaming</td><td>68</td><td>62</td><td>58</td><td>45</td><td>74</td></tr><tr><td>Radio</td><td>15</td><td>18</td><td>24</td><td>20</td><td>14</td></tr><tr><td>Vinyl records</td><td>8</td><td>12</td><td>6</td><td>5</td><td>2</td></tr><tr><td>CDs</td><td>4</td><td>3</td><td>7</td><td>22</td><td>3</td></tr><tr><td>Downloads</td><td>5</td><td>5</td><td>5</td><td>8</td><td>7</td></tr></table><div class="tbl-caption">Music listening time by format, five countries, 2023 (%)</div></div>
+  <div class="opts" data-task="t3"></div>
+  <button class="btn btn-primary" onclick="check('t3')">Перевірити</button>
+  <button class="btn btn-reset" onclick="resetMCQ('t3')">Спробувати ще</button>
+  <div class="fb" id="fb-t3"></div>
+</div>
+
+<hr class="divider">
+
+<h2>Частина Б · Своїми словами (2 таблиці)</h2>
+
+<div class="card">
+  <h3>Завдання 4 · Фастфуд за віком, 2023 (десяткові числа!)</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>meals/week</th><th>18–24</th><th>25–39</th><th>40–54</th><th>55–70</th></tr><tr><td>Burgers</td><td>3.1</td><td>2.4</td><td>1.6</td><td>0.8</td></tr><tr><td>Pizza</td><td>2.8</td><td>2.5</td><td>1.9</td><td>1.2</td></tr><tr><td>Fried chicken</td><td>2.2</td><td>1.4</td><td>0.9</td><td>0.5</td></tr><tr><td>Sushi</td><td>1.8</td><td>1.2</td><td>0.5</td><td>0.2</td></tr><tr><td>Salads</td><td>0.9</td><td>1.5</td><td>2.2</td><td>2.8</td></tr></table><div class="tbl-caption">Takeaway meals per week, by age group, UK 2023</div></div>
+  <div class="instr"><span class="lbl">Інструкція до завдання</span>Напиши <b>дві історії</b> (можна українською). Множники рахуй чесно: 3.1 ÷ 0.8 ≈ 3.9 → «nearly four times».</div>
+  <textarea id="ta4" rows="3" placeholder="Історія 1: ... Історія 2: ..."></textarea>
+  <div class="wc" id="wc4">0 слів</div>
+  <div>
+    <button class="btn btn-hint" onclick="showHint('h4',1)">Підказка 1</button>
+    <button class="btn btn-hint" onclick="showHint('h4',2)">Підказка 2</button>
+    <button class="btn btn-solution" onclick="showHint('h4',3)">Показати розв'язання</button>
+    <button class="btn btn-reset" onclick="resetLadder('h4','ta4','wc4')">Очистити</button>
+  </div>
+  <div class="hint-box" id="h4"></div>
+</div>
+
+<div class="card">
+  <h3>Завдання 5 · Смартфони, 2013 vs 2023 (ДВА роки — виняток!)</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>% of owners, daily</th><th>2013</th><th>2023</th></tr><tr><td>Making phone calls</td><td>95</td><td>78</td></tr><tr><td>Sending text messages</td><td>88</td><td>70</td></tr><tr><td>Social media</td><td>41</td><td>82</td></tr><tr><td>Mobile payments</td><td>3</td><td>64</td></tr><tr><td>Mobile gaming</td><td>25</td><td>48</td></tr></table><div class="tbl-caption">Daily smartphone activities, 2013 and 2023 (%)</div></div>
+  <div class="instr"><span class="lbl">Інструкція до завдання</span>Тут лише ДВІ колонки-дати. Значить, тренди легальні — але скільки історій тут ховається?</div>
+  <textarea id="ta5" rows="3" placeholder="Історія 1: ... Історія 2: ..."></textarea>
+  <div class="wc" id="wc5">0 слів</div>
+  <div>
+    <button class="btn btn-hint" onclick="showHint('h5',1)">Підказка 1</button>
+    <button class="btn btn-solution" onclick="showHint('h5',2)">Показати розв'язання</button>
+    <button class="btn btn-reset" onclick="resetLadder('h5','ta5','wc5')">Очистити</button>
+  </div>
+  <div class="hint-box" id="h5"></div>
+</div>
+
+<div class="rule">
+  <h3>Підсумок тренажера · що ти тепер вмієш</h3>
+  <ul>
+    <li>Читати таблицю будь-якого розміру: від 8 клітинок до 25 — головне знайти <b>домінанту</b> і <b>виняток</b>.</li>
+    <li>Рахувати множники з десятковими числами (3.1 ÷ 0.8 ≈ 3.9 → nearly four times).</li>
+    <li>Розрізняти режим мови: один рік — статика; два роки — тренди й past perfect.</li>
+  </ul>
+  <p class="small" style="margin-top:10px;">Навіщо це далі: у Тренажері 2 ти не просто знайдеш історії — ти навчишся ВИКИДАТИ зайве: згрупуєш рядки і відбереш потрібні клітинки.</p>
+</div>
+
+</div>
+
+<script>
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+const TASKS = {
+  t1: { opts: shuffle([
+    { t:"Younger people spent far more on takeaway, while older people devoted considerably more time to cooking at home.", ok:true,  why:"Історія №1: два протилежні полюси одним реченням — жодної цифри." },
+    { t:"Meal-kit services were marginal for both groups.", ok:true,  why:"Історія №2: рядок без історії — важливий теж (доказ, що ти бачиш усю таблицю)." },
+    { t:"18–30 year olds spent 6.8 hours on takeaway.", ok:false, why:"Цифра однієї клітинки — для body." },
+    { t:"Older people cook because they have more free time.", ok:false, why:"Причина — не дані таблиці. Думки заборонені." },
+    { t:"Online grocery shopping was 4.1 vs 2.2 hours.", ok:false, why:"Перелік чисел = переказ." }
+  ])},
+  t2: { opts: shuffle([
+    { t:"Younger Americans dominated the most visible online gigs, while pet and house sitting showed a reversed pattern led by the oldest group.", ok:true,  why:"Історія №1 + історія №2: лідерство молодих і повний фліп одного рядка." },
+    { t:"Online selling was the most evenly spread activity, with no clear age divide.", ok:true,  why:"Третя частина overview: «нічия» — теж знахідка. Три частини, не одна." },
+    { t:"22% of 18–24 year olds created content weekly.", ok:false, why:"Клітинка — для body." },
+    { t:"Young people prefer content creation because social media pays well.", ok:false, why:"Причина — не дані таблиці." },
+    { t:"Freelance services peaked at 14%.", ok:false, why:"Дрібниця (одна клітинка) — не overview." }
+  ])},
+  t3: { opts: shuffle([
+    { t:"Streaming dominated listening habits in all five countries, particularly in Brazil.", ok:true,  why:"Історія №1: рядок-переможець усюди. П'ять клітинок — одне речення без цифр." },
+    { t:"Japan stood out as a striking exception to the decline of physical media, while the UK led an unexpected vinyl revival.", ok:true,  why:"Історія №2: два винятки — саме вони і є історія цієї таблиці." },
+    { t:"Streaming accounted for 74% in Brazil.", ok:false, why:"Цифра — для body." },
+    { t:"Japan prefers CDs because physical media are cultural there.", ok:false, why:"Причина — не дані таблиці." },
+    { t:"Downloads were 5% in the USA.", ok:false, why:"Найнудніший рядок однією цифрою — точно не overview." }
+  ])}
+};
+
+const HINTS = {
+  h4: [
+    "<div class='h'><b>Підказка 1.</b> Чотири рядки йдуть вниз за віком. А один — йде вгору. Який? І де найбільший розрив?</div>",
+    "<div class='h'><b>Підказка 2.</b> Бургери/піца/курка/суші падають за віком (молоді їдять усе). Салати — повний фліп: найбільше у 55–70 (2.8). Найбільший розрив — суші: 1.8 проти 0.2 = рівно в дев'ять разів.</div>",
+    "<div class='s'><b>Розв'язання (пиши так само англійською):</b><br>«Overall, the youngest group recorded the highest figures in every fast-food category, with the gap widening sharply for sushi, while salads displayed a completely reversed pattern — the only category dominated by the oldest group.»<br><span class='small'><b>Українською:</b> домінанта (молоді всюди) + фліп (салати) + де розрив найгостріший (суші). Один рік — was, не rose.</span></div>"
+  ],
+  h5: [
+    "<div class='h'><b>Підказка 1.</b> Поділи п'ять рядків на два табори за НАПРЯМКОМ зміни. Що падає? Що росте? І що росте найдраматичніше?</div>",
+    "<div class='s'><b>Розв'язання (пиши так само англійською):</b><br>«Overall, traditional communication by calls and texts declined over the decade, while newer activities — social media and above all mobile payments — grew dramatically. By 2023, social media had become the most common daily use.»<br><span class='small'><b>Українською:</b> два роки → тренди легальні (declined, grew). Дві історії: старе відмирає, нове вибухає (payments 3→64). Past perfect «had become» — бонус за граматику.</span></div>"
+  ]
+};
+
+function renderOpts(id){
+  const box = document.querySelector('[data-task="'+id+'"]');
+  box.innerHTML = TASKS[id].opts.map((o,i)=>
+    '<label class="opt" id="l-'+id+'-'+i+'"><input type="checkbox" id="c-'+id+'-'+i+'"><span>'+o.t+'<div class="why" id="w-'+id+'-'+i+'"></div></span></label>'
+  ).join('');
+}
+function check(id){
+  const t = TASKS[id]; let picked = 0, correctPicked = 0;
+  t.opts.forEach((o,i)=>{
+    const cb = document.getElementById('c-'+id+'-'+i), lab = document.getElementById('l-'+id+'-'+i), why = document.getElementById('w-'+id+'-'+i);
+    const isPicked = cb.checked;
+    if(isPicked){ picked++; if(o.ok) correctPicked++; }
+    const good = isPicked === o.ok;
+    lab.classList.remove('ok','bad'); why.innerHTML = '';
+    if(isPicked || !o.ok){ lab.classList.add(good ? 'ok' : 'bad'); why.innerHTML = (o.ok?'✓ ':'✗ ')+o.why; }
+  });
+  const fb = document.getElementById('fb-'+id);
+  if(picked===2 && correctPicked===2){ fb.textContent='✓ Обидва вірно! Від простої до складної — бачиш everywhere.'; fb.className='fb good'; }
+  else if(picked===2){ fb.textContent='Два обрано, але є помилка — читай червоні пояснення.'; fb.className='fb bad'; }
+  else { fb.textContent='Потрібно позначити рівно два твердження (обрано '+picked+').'; fb.className='fb bad'; }
+}
+function resetMCQ(id){
+  TASKS[id].opts.forEach((o,i)=>{
+    document.getElementById('c-'+id+'-'+i).checked = false;
+    document.getElementById('l-'+id+'-'+i).classList.remove('ok','bad');
+    document.getElementById('w-'+id+'-'+i).innerHTML = '';
+  });
+  const fb = document.getElementById('fb-'+id); fb.textContent=''; fb.className='fb';
+}
+function showHint(boxId, level){
+  const box = document.getElementById(boxId), arr = HINTS[boxId];
+  const html = arr[Math.min(level, arr.length)-1];
+  if(!box.innerHTML.includes(html)){ box.innerHTML += html; }
+}
+function resetLadder(boxId, taId, wcId){
+  document.getElementById(boxId).innerHTML = '';
+  const ta = document.getElementById(taId); ta.value=''; ta.readOnly=false;
+  document.getElementById(wcId).textContent = '0 слів';
+}
+Object.keys(TASKS).forEach(renderOpts);
+['ta4','ta5'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', function(){
+    const n = this.value.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('wc'+id.slice(2)).textContent = n + ' слів';
+  });
+});
+</script>
+</body>
+</html>

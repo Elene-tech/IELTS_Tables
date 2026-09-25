@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Словник модуля · Tables</title>
+<style>
+:root{
+  --bg:#F7F5EC; --card:#FFFFFF; --ink:#22271E; --muted:#6E7468; --line:#E4E1D2;
+  --green:#1E5631; --green-soft:#E9F2E4;
+  --lime:#84CC16; --lime-soft:#F2F9E0;
+  --yellow:#FDE047;
+  --orange:#E8890C; --orange-soft:#FCF1DE;
+  --red:#B3402E; --red-soft:#F8E9E5;
+  --purple:#7A5AA0; --purple-soft:#F1ECF7;
+  --blue:#2E5A88;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; font-size:15px; line-height:1.55; padding:24px 16px 60px;}
+.wrap{max-width:980px; margin:0 auto;}
+h1,h2{font-family:Georgia,'Times New Roman',serif; color:var(--green);}
+h1{font-size:28px; margin-bottom:6px;}
+h2{font-size:20px; margin:30px 0 10px; border-bottom:2px solid var(--lime); padding-bottom:4px;}
+.sub{color:var(--muted); font-size:14px; margin-bottom:20px;}
+mark{background:var(--yellow); padding:0 3px; border-radius:2px;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:16px; box-shadow:0 1px 3px rgba(30,60,30,.05);}
+table{width:100%; border-collapse:collapse; font-size:14px; margin-top:8px;}
+th,td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top;}
+th{background:var(--green-soft); color:var(--green); font-weight:600;}
+tr:nth-child(even) td{background:#FBFAF4;}
+.card table{display:block; overflow-x:auto; -webkit-overflow-scrolling:touch;}
+.note{background:var(--purple-soft); border-left:3px solid var(--purple); padding:10px 14px; border-radius:0 8px 8px 0; font-size:13px; margin-top:10px;}
+.warn{background:var(--red-soft); border-left:3px solid var(--red); padding:10px 14px; border-radius:0 8px 8px 0; font-size:13px; margin-top:10px;}
+.small{font-size:12.5px; color:var(--muted);}
+.trend{color:var(--green); font-weight:600;}
+.x{color:var(--red);} .v{color:var(--green);}
+ul{padding-left:20px;}
+li{margin:4px 0;}
+@media (max-width:640px){
+  body{font-size:14.5px;}
+  table{font-size:13px;}
+  .card{padding:12px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Словник модуля · Tables</h1>
+<p class="sub">Довідка під час письма. Головне правило: <mark>відбір, а не переписування</mark>. 20–25 клітинок у таблиці → 8–10 у відповіді. І один рік → статика; два роки → тренди.</p>
+
+<h2>1 · Правило відбору: 20 клітинок увійшли — 10 вийшли</h2>
+<div class="card">
+<table>
+<tr><th>Рішення</th><th>Правило</th><th>Приклад</th></tr>
+<tr><td class="trend">✓ БЕРИ екстремуми</td><td>Найвищу й найнижчу клітинку рядка/колонки — якорять порівняння.</td><td>Gaming 15 (максимум таблиці) · TikTok у Boomers: 1 год (мінімум)</td></tr>
+<tr><td class="trend">✓ БЕРИ винятки</td><td>Рядок/група, що ламає тренд, — найцікавіша історія.</td><td>Boomers лідирують у новинах (11) · Millennials — у стрімінгу (12)</td></tr>
+<tr><td class="trend">✓ БЕРИ великі розриви</td><td>Клітинки з вражаючим розривом — матеріал для множника.</td><td>TikTok: 12 = three times Gen X (4), twelve times Boomers (1)</td></tr>
+<tr><td class="x">✗ ВИКИДАЙ середню смугу</td><td>Клітинки без історії — марнота слів.</td><td>Gen X streaming (9) · Millennial news (5) — залишити</td></tr>
+<tr><td class="x">✗ НІКОЛИ не пояснюй причини</td><td>«Молоді люблять геймінг, бо…» — думка, а не дані.</td><td>forbidden. Describe, don't explain.</td></tr>
+</table>
+<div class="note">Тест відбору: постав кожній клітинці питання «Чи підтримуєш ти мій overview або мій виняток?» Ні — за борт. Якщо обведено все — ти переписуєш; якщо третина — пропустив щось важливе.</div>
+</div>
+
+<h2>2 · Дієслова таблиць — заміни «spent» і «had»</h2>
+<div class="card">
+<table>
+<tr><th>Дієслово</th><th>Патерн</th><th>Приклад</th></tr>
+<tr><td class="trend">recorded</td><td>X recorded the highest/lowest figure</td><td>Gen Z recorded the highest figures for online entertainment.</td></tr>
+<tr><td class="trend">topped the table</td><td>X topped the table (in Y), at N</td><td>Millennials topped the table in streaming, at 12 hours.</td></tr>
+<tr><td class="trend">dominated</td><td>X dominated (category), (at N)</td><td>Streaming dominated listening habits in all five countries.</td></tr>
+<tr><td class="trend">led</td><td>X led (in Y), at N</td><td>The 50–65 group led in pet sitting, at 10%.</td></tr>
+<tr><td class="trend">lagged behind</td><td>X lagged behind (in Y), at N</td><td>Boomers lagged behind in every digital category.</td></tr>
+<tr><td class="trend">devoted / allocated</td><td>X devoted N hours to Y</td><td>Gen Z devoted 12 hours weekly to short-form video.</td></tr>
+<tr><td class="trend">accounted for</td><td>Y accounted for N% of X</td><td>Streaming accounted for 74% of listening time in Brazil.</td></tr>
+<tr><td class="trend">stood out as</td><td>X stood out as (the only…)</td><td>Japan stood out as the one country where CDs still mattered.</td></tr>
+<tr><td class="trend">bucked the pattern</td><td>X bucked the pattern (entirely)</td><td>Pet sitting bucked the pattern, led by the oldest group.</td></tr>
+</table>
+<p class="small" style="margin-top:8px;"><b>Іменники:</b> the figure for… · the share of… · a negligible N · a mere N · participation · consumption · usage.</p>
+</div>
+
+<h2>3 · Мова групування — кілька клітинок в одній кляузі</h2>
+<div class="card">
+<table>
+<tr><th>Фраза</th><th>Робота</th><th>Приклад</th></tr>
+<tr><td class="trend">respectively</td><td>Два значення до двох груп У ТОМУ Ж ПОРЯДКУ</td><td>Gen X and Millennials recorded 8 and 10 hours respectively.</td></tr>
+<tr><td class="trend">intermediate figures of…</td><td>Середні клітинки без переліку</td><td>the middle groups recorded intermediate figures of 14% and 6%</td></tr>
+<tr><td class="trend">across all four groups</td><td>Універсальний патерн однією фразою</td><td>Downloads recorded 5–8% across all five countries.</td></tr>
+<tr><td class="trend">both X and Y</td><td>Дві клітинки зі спільною властивістю</td><td>just 1 hour on both TikTok and gaming</td></tr>
+<tr><td class="trend">a similar pattern held for…</td><td>Місток між рядками</td><td>A similar pattern held for short-form video.</td></tr>
+<tr><td class="trend">told the same/opposite story</td><td>Місток, розмовніший відтінок</td><td>Salads told the opposite story.</td></tr>
+</table>
+<div class="warn"><b>Respectively = порядок вирішує все.</b> «Gen X and Millennials recorded 8 and 10 hours respectively» = Gen X 8, Millennials 10. Помилка в порядку = переплутані дані = мінус Task Achievement. І ніколи respectfully («з повагою») — це інше слово.</div>
+</div>
+
+<h2>4 · Мова винятків — полювання на фліп</h2>
+<div class="card">
+<ul>
+<li><b>stood out as</b> — Millennials stood out as the only group to top a category besides Gen Z.</li>
+<li><b>deviated from / bucked the pattern</b> — news websites bucked the pattern seen elsewhere.</li>
+<li><b>the notable exception / the one category where…</b> — the one category where Gen Z did not lead.</li>
+<li><b>despite / in spite of</b> — despite leading every other category, Gen Z trailed in news.</li>
+<li><b>a reversed / flipped pattern</b> — news websites displayed a strikingly reversed pattern.</li>
+</ul>
+<div class="note"><b>Де ставити виняток.</b> Сильний фліп (цілий рядок) — у overview і окремий абзац. Слабкий (одна клітинка) — півречення в body. Не ховай сильний фліп усередині абзацу — це найцікавіше в таблиці.</div>
+</div>
+
+<h2>5 · Topic openers для body</h2>
+<div class="card">
+<table>
+<tr><th>Opener</th><th>Навіщо</th></tr>
+<tr><td class="trend">With regard to X,…</td><td>Почати з КАТЕГОРІЇ, не з назви групи — аналітичний тон.</td></tr>
+<tr><td class="trend">In terms of X,…</td><td>Та сама робота, легший відтінок.</td></tr>
+<tr><td class="trend">Turning to X,…</td><td>Сигнал переходу (зручно для Body 2).</td></tr>
+<tr><td class="trend">Notably,…</td><td>Прапорець однієї вражаючої клітинки всередині абзацу.</td></tr>
+<tr><td class="trend">In contrast,…</td><td>Відкриття Body 2.</td></tr>
+</table>
+<p class="small" style="margin-top:8px;">Тест на перелік: якщо 3–4 речення поспіль починаються з назви групи («Gen Z spent…», «Millennials spent…») — ти перераховуєш. Заміни половину на openers з категорією.</p>
+</div>
+
+<h2>6 · Множники: співвідношення → фраза</h2>
+<div class="card">
+<table>
+<tr><th>Співвідношення</th><th>Фраза</th><th>Приклад</th></tr>
+<tr><td>1.0–1.4×</td><td>без множника — slightly/marginally + comparative</td><td>12 vs 10 → marginally ahead of Gen Z</td></tr>
+<tr><td>1.5–1.8×</td><td>well over one and a half times</td><td>15 vs 9 → well over one and a half times the Millennial figure</td></tr>
+<tr><td>1.8–2.2×</td><td>nearly double / double the figure for</td><td>12 vs 6 → double the German figure</td></tr>
+<tr><td>2.5–3.4×</td><td>nearly / more than three times</td><td>12 vs 4 → three times the Gen X figure</td></tr>
+<tr><td>3.5–4.4×</td><td>nearly four times</td><td>3.1 vs 0.8 → nearly four times the figure for the over-55s</td></tr>
+<tr><td>5×+</td><td>more than five/seven/ten times</td><td>22 vs 2 → more than ten times the figure for the over-50s</td></tr>
+<tr><td>точне ціле</td><td>без хеджу</td><td>1.8 vs 0.2 → nine times the figure (exactly 9)</td></tr>
+</table>
+<p class="small" style="margin-top:8px;"><b>-fold для часу:</b> a more than twenty-fold increase (3→64). Times — для порівнянь груп; fold — для змін у часі. Десяткові рахуються як звичайні: 3.1÷0.8≈3.9.</p>
+</div>
+
+<h2>7 · Один рік vs два роки</h2>
+<div class="card">
+<table>
+<tr><th>ОДНА ДАТА (2023)</th><th>ДВІ ДАТИ (2013 → 2023)</th></tr>
+<tr><td>Past simple, СТАТИКА: was, recorded, stood at, accounted for</td><td>Past simple, ДИНАМІКА: rose, fell, soared, doubled, declined</td></tr>
+<tr><td>✗ rose · fell · grew — заборонені</td><td>усі тренди дозволені, але кожен потребує обох цифр (from X to Y)</td></tr>
+<tr><td>Патерн між групами ОК: «figures fell steadily across the generations»</td><td>Рух у часі ОК: «payments soared from 3% to 64%»</td></tr>
+<tr><td>times-мова: nine times the figure for…</td><td>fold-мова: a twenty-fold increase · past perfect: by 2023, social media had become…</td></tr>
+</table>
+</div>
+
+<h2>8 · Introduction та Overview — рамки</h2>
+<div class="card">
+<table>
+<tr><th>§1</th><th>Приклад</th></tr>
+<tr><td>The table provides data on… / compares…</td><td>…the average weekly hours that four generations devoted to five online activities in 2023.</td></tr>
+<tr><td>how people in five countries distributed…</td><td>…their listening time across five formats in 2023.</td></tr>
+<tr><td>two dates announced</td><td>…on a daily basis in 2013 and 2023 — читач уже чекає трендів.</td></tr>
+</table>
+<table style="margin-top:12px;">
+<tr><th>§2 (БЕЗ ЧИСЕЛ!)</th><th>Приклад</th></tr>
+<tr><td>Overall, X recorded the highest figures for…, by a considerable margin.</td><td>…the newest forms of entertainment…</td></tr>
+<tr><td>However, Y displayed a strikingly reversed pattern…</td><td>…with Boomers spending the most time on them.</td></tr>
+<tr><td>X dominated…, while Y stood out as a striking exception.</td><td>streaming… Japan… decline of physical media.</td></tr>
+<tr><td>дві дати: X declined over the period, while Y grew dramatically.</td><td>calls/texts vs social media/payments.</td></tr>
+</table>
+<p class="small" style="margin-top:8px;">Заборонені вступи: «From the table we can see…» (калька) і «The given table illustrates…» (штамп із зазубрювання).</p>
+</div>
+
+<h2>9 · Шаблони body-речень</h2>
+<div class="card">
+<ul>
+<li><b>① Домінанта + множник:</b> With regard to [category], [leader] spent [N] — [multiplier] the [group] figure of [N2], and [comparison] the [group2] figure ([N3]).</li>
+<li><b>② Універсальний рядок, дві клітинки:</b> [Row] accounted for the largest share in every [group], ranging from [low] in [min] to [high] in [max] — the highest figure in the entire table.</li>
+<li><b>③ Виняток:</b> [Row] was the one [category] where [exception group] led, at [N] — [multiplier] the [main group] figure of [N2].</li>
+<li><b>④ Ланцюг respectively на два рядки:</b> [Row1] and [Row2] showed the same pattern, falling from [N1] and [N2] respectively among [A] to [N3] and [N4] among [B].</li>
+</ul>
+</div>
+
+<h2>10 · Пастки для україномовних</h2>
+<div class="card">
+<table>
+<tr><th>Пастка</th><th>✗</th><th>✓</th></tr>
+<tr><td>respectfully vs respectively</td><td class="x">8 and 10 hours, respectfully</td><td class="v">8 and 10 hours respectively (порядок!)</td></tr>
+<tr><td>«з таблиці ми бачимо»</td><td class="x">From the table we can see…</td><td class="v">The table provides data on…</td></tr>
+<tr><td>множник + more</td><td class="x">nine times more</td><td class="v">nine times the figure (for…)</td></tr>
+<tr><td>«the» перед групами</td><td class="x">the Gen Z spent</td><td class="v">Gen Z spent (але: the youngest group)</td></tr>
+<tr><td>прийменники</td><td class="x">hours devoted for gaming</td><td class="v">devoted to · data on · the figure for</td></tr>
+<tr><td>тренд при одному році</td><td class="x">hours fell with age (2023)</td><td class="v">figures were lower among older groups</td></tr>
+<tr><td>причини й думки</td><td class="x">…because they grew up with technology</td><td class="v">(не писати взагалі)</td></tr>
+<tr><td>арикль</td><td class="x">the highest figure in table</td><td class="v">the highest figure in the table</td></tr>
+</table>
+</div>
+
+<p class="small" style="margin-top:20px;">Фінальна перевірка (2 хв на іспиті): 1) respectively — слово і порядок правильні? 2) «we can see» десь? 3) «the» перед назвами груп? 4) тренд при одному році? 5) причини в тексті? Ці п'ять помилок коштують цілий бал.</p>
+
+</div>
+</body>
+</html>

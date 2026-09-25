@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажер 3 · Пиши по частинах — Tables</title>
+<style>
+:root{
+  --bg:#F7F5EC; --card:#FFFFFF; --ink:#22271E; --muted:#6E7468; --line:#E4E1D2;
+  --green:#1E5631; --green-soft:#E9F2E4;
+  --lime:#84CC16; --lime-soft:#F2F9E0;
+  --yellow:#FDE047;
+  --orange:#E8890C; --orange-soft:#FCF1DE;
+  --red:#B3402E; --red-soft:#F8E9E5;
+  --purple:#7A5AA0; --purple-soft:#F1ECF7;
+  --blue:#2E5A88;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; font-size:16.5px; line-height:1.6; padding:24px 16px 60px;}
+.wrap{max-width:980px; margin:0 auto;}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif; color:var(--green); line-height:1.25;}
+h1{font-size:30px; margin-bottom:6px;}
+h2{font-size:22px; margin:36px 0 14px;}
+h3{font-size:18px; margin:18px 0 10px;}
+.sub{color:var(--muted); font-size:14.5px; margin-bottom:20px;}
+mark{background:var(--yellow); padding:0 3px; border-radius:2px;}
+.bc{font-size:13px; color:var(--muted); margin-bottom:14px;}
+.bc b{color:var(--green);}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(30,60,30,.05);}
+.step-tag{display:inline-block; font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; border-radius:20px; padding:3px 12px; margin-bottom:10px;}
+.tag-green{color:var(--green); background:var(--green-soft); border:1px solid var(--green);}
+.tag-orange{color:var(--orange); background:var(--orange-soft); border:1px solid var(--orange);}
+.instr{background:var(--green-soft); border:1.5px solid var(--green); border-radius:12px; padding:14px 16px; margin:12px 0; font-size:15.5px;}
+.instr .lbl{display:block; font-size:12px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--green); margin-bottom:6px;}
+.btn{display:inline-block; border:none; border-radius:10px; padding:11px 18px; font-size:14.5px; font-weight:600; cursor:pointer; margin:6px 6px 0 0; font-family:inherit;}
+.btn-primary{background:var(--green); color:#fff;}
+.btn-solution{background:transparent; border:1.5px solid var(--orange); color:var(--orange);}
+.btn-reset{background:transparent; border:1.5px solid var(--line); color:var(--muted);}
+.btn:disabled{opacity:.4; cursor:not-allowed;}
+.btn:hover:not(:disabled){opacity:.85;}
+textarea{width:100%; border:1.5px solid var(--line); border-radius:10px; padding:13px 15px; font-size:16px; font-family:inherit; background:var(--card); color:var(--ink); resize:vertical;}
+textarea:focus{outline:none; border-color:var(--green);}
+textarea.locked{background:#F4F2E8; border-style:dashed;}
+.attempt{background:var(--purple-soft); border:1.5px solid var(--purple); border-radius:10px; padding:12px 15px; font-size:14.5px; margin-top:12px;}
+.attempt .lbl{display:block; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--purple); margin-bottom:5px;}
+.model{display:none; margin-top:14px; border-left:3px solid var(--green); background:var(--green-soft); padding:13px 16px; border-radius:0 10px 10px 0; font-size:14.5px;}
+.opt{display:flex; gap:12px; align-items:flex-start; padding:14px 15px; border:1.5px solid var(--line); border-radius:10px; margin-bottom:9px; cursor:pointer; font-size:16.5px; line-height:1.5; background:var(--card);}
+.opt:hover{border-color:var(--green);}
+.opt input{margin-top:5px; accent-color:var(--green); flex-shrink:0; width:18px; height:18px;}
+.opt .why{display:none; font-size:14.5px; margin-top:6px;}
+.opt.ok{border-color:var(--green); background:var(--green-soft);}
+.opt.ok .why{display:block; color:var(--green);}
+.opt.bad{border-color:var(--red); background:var(--red-soft);}
+.opt.bad .why{display:block; color:var(--red);}
+.fb{margin-top:10px; font-size:15px; font-weight:600;}
+.rule{background:var(--lime-soft); border:1.5px solid var(--lime); border-radius:14px; padding:18px 20px; margin:28px 0;}
+.rule h3{margin-top:0;}
+.rule li{margin:7px 0 7px 18px;}
+.divider{border:none; border-top:2px dashed var(--line); margin:36px 0;}
+.small{font-size:13.5px; color:var(--muted);}
+.err-list li{margin:7px 0 7px 18px; font-size:14.5px;}
+details.card summary{cursor:pointer; font-weight:600; color:var(--purple);}
+.trap-table{width:100%; border-collapse:collapse; font-size:14px;}
+.trap-table td, .trap-table th{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top;}
+.trap-table th{background:var(--green-soft); color:var(--green);}
+.card table, details table{display:block; overflow-x:auto; -webkit-overflow-scrolling:touch;}
+.x{color:var(--red);} .v{color:var(--green);}
+.tbl-box{overflow-x:auto; margin:12px 0;}
+table.tbl{width:100%; border-collapse:collapse; font-size:14.5px; background:#fff; min-width:460px;}
+.tbl th{background:var(--green-soft); color:var(--green); font-weight:600; padding:9px 12px; border:1px solid var(--line); text-align:center;}
+.tbl th:first-child{text-align:left;}
+.tbl td{padding:8px 12px; border:1px solid var(--line); text-align:center; font-variant-numeric:tabular-nums;}
+.tbl td:first-child{text-align:left; font-weight:600;}
+.tbl tr:nth-child(even) td{background:#FBFAF4;}
+@media (max-width:640px){
+  body{padding:16px 10px 44px; font-size:15.5px;}
+  h1{font-size:24px;} h2{font-size:19px;}
+  .card{padding:14px;}
+  .opt{font-size:15.5px; padding:12px;}
+  .btn{padding:12px 16px;}
+  table.tbl{font-size:13px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="bc">Модуль 4 · Tables → <b>Тренажер 3 з 4</b></div>
+<h1>Пиши по частинах</h1>
+<p class="sub">Ти бачиш історії (Тренажер 1) і відбираєш клітинки (Тренажер 2). Тепер пишемо — з фокусом на групуючі структури: respectively, intermediate figures, мова винятків.</p>
+
+<div class="instr">
+  <span class="lbl">Як проходити цей тренажер</span>
+  Кнопка з моделлю відкривається лише після твоєї спроби (мінімум ~5 слів). Після відкриття твій текст <mark>зафіксовується</mark> поруч із моделлю. Словник відкритий завжди.
+</div>
+
+<!-- ============ 3.1 INTRODUCTION ============ -->
+<h2>3.1 · Introduction — перефраз, ніколи копія</h2>
+<div class="card">
+  <span class="step-tag tag-green">Правило · три ходи</span>
+  <p style="font-size:15.5px;">1) Дієслово: <i>shows → provides data on / compares</i> (найчесніше для таблиці). 2) Іменникова група: <i>hours spent → weekly hours devoted to</i>. 3) Додай: назви груп, рік. ✗ «From the table we can see…» — калька, заборонена.</p>
+</div>
+
+<div class="card">
+  <h3>Завдання 1 · Gig economy by age, USA, 2023</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>% active weekly</th><th>18–24</th><th>25–34</th><th>35–49</th><th>50–65</th></tr><tr><td>Content creation (YouTube, TikTok)</td><td>22</td><td>14</td><td>6</td><td>2</td></tr><tr><td>Online selling (eBay, Etsy)</td><td>18</td><td>20</td><td>17</td><td>9</td></tr><tr><td>Food delivery driving</td><td>15</td><td>11</td><td>4</td><td>1</td></tr><tr><td>Freelance services</td><td>9</td><td>14</td><td>12</td><td>6</td></tr><tr><td>Pet & house sitting</td><td>3</td><td>5</td><td>8</td><td>10</td></tr></table><div class="tbl-caption">Weekly participation in gig-economy work, by age group, USA 2023 (%)</div></div>
+  <div class="instr"><span class="lbl">Інструкція до завдання</span>Перефразуй (1–2 речення, без даних):<br><i>The table below shows the percentage of people in four age groups in the USA who participated in five types of gig-economy work at least once a week in 2023.</i></div>
+  <textarea id="i1" rows="2" placeholder="The table compares..."></textarea>
+  <button class="btn btn-solution" id="b1" disabled>Показати модель</button>
+  <div id="a1"></div>
+  <div class="model" id="m1">
+    <b>Модель:</b> The table compares the percentage of four age groups in the USA who took part in five types of gig-economy work at least weekly in 2023.
+    <p class="small" style="margin-top:8px;">Українською: took part in замість participated in; at least weekly — стисліше за once a week.</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Завдання 2 · Music listening, five countries, 2023</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>Format · %</th><th>USA</th><th>UK</th><th>Germany</th><th>Japan</th><th>Brazil</th></tr><tr><td>Streaming</td><td>68</td><td>62</td><td>58</td><td>45</td><td>74</td></tr><tr><td>Radio</td><td>15</td><td>18</td><td>24</td><td>20</td><td>14</td></tr><tr><td>Vinyl records</td><td>8</td><td>12</td><td>6</td><td>5</td><td>2</td></tr><tr><td>CDs</td><td>4</td><td>3</td><td>7</td><td>22</td><td>3</td></tr><tr><td>Downloads</td><td>5</td><td>5</td><td>5</td><td>8</td><td>7</td></tr></table><div class="tbl-caption">Music listening time by format, five countries, 2023 (%)</div></div>
+  <div class="instr"><span class="lbl">Інструкція до завдання</span><i>The table below shows how people in five countries divided their music listening time between five formats in 2023 (as a percentage of total listening time).</i></div>
+  <textarea id="i2" rows="2" placeholder="The table compares how..."></textarea>
+  <button class="btn btn-solution" id="b2" disabled>Показати модель</button>
+  <div id="a2"></div>
+  <div class="model" id="m2">
+    <b>Модель:</b> The table compares how people in five countries — the USA, the UK, Germany, Japan and Brazil — distributed their music listening time across five formats in 2023.
+    <p class="small" style="margin-top:8px;">Українською: distributed across замість divided between; п'ять країн названі — точність, якої завдання лише натякало.</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Завдання 3 · Smartphones, 2013 and 2023</h3>
+  <div class="tbl-box"><table class="tbl"><tr><th>% of owners, daily</th><th>2013</th><th>2023</th></tr><tr><td>Making phone calls</td><td>95</td><td>78</td></tr><tr><td>Sending text messages</td><td>88</td><td>70</td></tr><tr><td>Social media</td><td>41</td><td>82</td></tr><tr><td>Mobile payments</td><td>3</td><td>64</td></tr><tr><td>Mobile gaming</td><td>25</td><td>48</td></tr></table><div class="tbl-caption">Daily smartphone activities, 2013 and 2023 (%)</div></div>
+  <div class="instr"><span class="lbl">Інструкція до завдання</span><i>The table below shows the percentage of smartphone owners who used their phone for five activities on a daily basis in 2013 and 2023.</i></div>
+  <textarea id="i3" rows="2" placeholder="The table compares..."></textarea>
+  <button class="btn btn-solution" id="b3" disabled>Показати модель</button>
+  <div id="a3"></div>
+  <div class="model" id="m3">
+    <b>Модель:</b> The table compares the percentage of smartphone owners who used their phone for five activities on a daily basis in 2013 and 2023.
+    <p class="small" style="margin-top:8px;">Українською: дві дати у вступі — читач уже чекає трендів. Слово на слово — але дієслово змінено, цього достатньо.</p>
+  </div>
+</div>
+
+<!-- ============ 3.2 OVERVIEW MCQ ============ -->
+<h2>3.2 · Overview · спочатку правило, потім контроль</h2>
+<div class="card">
+  <span class="step-tag tag-orange">Правило overview</span>
+  <p style="font-size:15.5px;">Overview = <mark>домінанта + виняток, нуль цифр</mark>. Сильний фліп (цілий рядок) заслуговує на місце в overview і на окремий абзац. Слабкий виняток (одна клітинка) — півречення в body. Порушення: цифра / причина / дрібна деталь.</p>
+</div>
+<div class="card">
+  <div id="ov-items"></div>
+  <button class="btn btn-primary" onclick="checkOV()">Перевірити</button>
+  <button class="btn btn-reset" onclick="resetOV()">Спробувати ще</button>
+  <div class="fb" id="ov-fb"></div>
+</div>
+
+<!-- ============ 3.3 DRILLS ============ -->
+<h2>3.3 · Групуючі структури та множники · три дріли</h2>
+<p class="small" style="margin-bottom:14px;">Серце модуля. А — мова групування (respectively, intermediate figures, винятки), Б — множники з десятковими, В — оновлення речень. Усього 10 завдань.</p>
+
+<details class="card" id="dict">
+  <summary>Словник: групування + множники (відкрити)</summary>
+  <div style="margin-top:12px; font-size:14.5px;">
+    <p><b>Групування:</b> respectively (значення в тому ж порядку, що й групи!) · recording intermediate figures of… · across all four groups · in virtually every category · both X and Y · a similar pattern held for… · told the same/opposite story</p>
+    <p style="margin-top:6px;"><b>Винятки:</b> stood out as · bucked the pattern · the notable exception · the one category where… · despite / in spite of · a reversed/flipped pattern</p>
+    <p style="margin-top:6px;"><b>Множники:</b> 1.5–1.8× → well over one and a half times | 1.8–2.2× → nearly double / double the figure for | 2.5–3.4× → nearly/more than three times | 3.5–4.4× → nearly four times | 5×+ → more than five/seven/ten times | точне ціле — без хеджу (nine times the figure).</p>
+    <p style="margin-top:6px;"><b>-fold для часу:</b> a twenty-fold increase (3→64). Times — для груп, fold — для змін у часі.</p>
+  </div>
+</details>
+
+<h3>Дріль А · Групуючі структури (4 завдання)</h3>
+<div class="card"><div class="instr"><span class="lbl">Інструкція</span>Обери фразу, що збирає кілька клітинок в одне речення правильно. Пильнуй порядок у respectively!</div><div id="drillA"></div><button class="btn btn-primary" onclick="checkDrill('A')">Перевірити</button> <button class="btn btn-reset" onclick="resetDrill('A')">Спробувати ще</button><div class="fb" id="fbA"></div></div>
+
+<h3>Дріль Б · Множник чесно, з десятковими (3 завдання)</h3>
+<div class="card"><div class="instr"><span class="lbl">Інструкція</span>Діли більше на менше до написання. Десяткові множаться як звичайні: 3.1 ÷ 0.8 ≈ 3.9 → nearly four times.</div><div id="drillB"></div><button class="btn btn-primary" onclick="checkDrill('B')">Перевірити</button> <button class="btn btn-reset" onclick="resetDrill('B')">Спробувати ще</button><div class="fb" id="fbB"></div></div>
+
+<h3>Дріль В · Онови речення (3 завдання)</h3>
+<div class="card"><div class="instr"><span class="lbl">Інструкція</span>Band 5-речення з типовими помилками → обери версію Band 7+.</div><div id="drillC"></div><button class="btn btn-primary" onclick="checkDrill('C')">Перевірити</button> <button class="btn btn-reset" onclick="resetDrill('C')">Спробувати ще</button><div class="fb" id="fbC"></div></div>
+
+<!-- ============ 3.4 GRAMMAR ============ -->
+<h2>3.4 · Граматика 7.5 · «Виправ абзац»</h2>
+<div class="card">
+  <div class="instr"><span class="lbl">Інструкція до завдання</span>Абзац рівня Band 5. Впиши <b>свою виправлену версію</b>, зберігши факти. Модель відкриється лише після твоєї спроби.</div>
+  <div style="background:var(--orange-soft); border:1px solid var(--orange); border-radius:10px; padding:12px 15px; font-size:15px; margin:12px 0;"><i>Gen Z spent 15 hours on gaming. This was a lot more than Boomers who spent 2 hours. For TikTok, Gen Z spent 12 hours and Gen X spent 4 hours. Millennials spent the most time on streaming at 12 hours. This was more than the other groups.</i></div>
+  <textarea id="fx" rows="4" placeholder="Gen Z devoted 15 hours weekly to online gaming..."></textarea>
+  <button class="btn btn-solution" id="bfx" disabled>Показати версію Band 8 + розбір</button>
+  <div id="afx"></div>
+  <div class="model" id="mfx">
+    <b>Версія Band 8:</b> Gen Z devoted 15 hours weekly to online gaming — more than seven times the Boomer figure of just 2 hours. A similar pattern held for short-form video, where Gen Z again led at 12 hours, three times the Gen X figure. Millennials topped the table in streaming, recording 12 hours — the one category where the youngest generation did not lead.
+    <ul class="err-list" style="margin-top:12px;">
+      <li><span class="x">spent 15 hours on gaming</span> → <span class="v">devoted 15 hours weekly to online gaming</span> — devoted to + щотижневі години.</li>
+      <li><span class="x">a lot more than</span> → <span class="v">more than seven times the Boomer figure</span> — 15÷2=7.5, чесний множник.</li>
+      <li><span class="x">For TikTok, Gen Z spent… and Gen X spent…</span> → <span class="v">A similar pattern held for short-form video</span> — місток між рядками, одна структура на два рядки.</li>
+      <li><span class="x">spent the most time on streaming</span> → <span class="v">topped the table in streaming</span> — компактне дієслово домінанси.</li>
+      <li><span class="x">This was more than the other groups</span> → <span class="v">the one category where the youngest generation did not lead</span> — рамка винятку замість розмитого «more».</li>
+      <li><span class="x">5 речень, 0 порівняльних структур</span> → <span class="v">3 речення, 3 структури</span> — і 8 клітинок зібрано в 5.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Контрольна · 6 пасток для українців</h3>
+  <div class="instr"><span class="lbl">Навіщо ця контрольна</span>Граматика — 25% оцінки, ці помилки екзаменатор бачить одразу. Пройди: якщо всі 6 — більше їх не робитимеш.</div>
+  <div id="traps"></div>
+  <button class="btn btn-primary" onclick="checkTraps()">Перевірити</button>
+  <button class="btn btn-reset" onclick="resetTraps()">Спробувати ще</button>
+  <div class="fb" id="traps-fb"></div>
+  <details style="margin-top:14px;">
+    <summary style="cursor:pointer; font-weight:600; color:var(--purple);">Повна таблиця пасток (відкрити)</summary>
+    <table class="trap-table" style="margin-top:10px;">
+      <tr><th>Пастка</th><th>✗ Неправильно</th><th>✓ Правильно</th></tr>
+      <tr><td>«з повагою» замість «відповідно»</td><td class="x">8 and 10 hours, respectfully</td><td class="v">8 and 10 hours respectively</td></tr>
+      <tr><td>«з таблиці ми бачимо»</td><td class="x">From the table we can see…</td><td class="v">The table provides data on…</td></tr>
+      <tr><td>множник + more</td><td class="x">nine times more</td><td class="v">nine times the figure (for…)</td></tr>
+      <tr><td>«the» перед назвами груп</td><td class="x">the Gen Z spent / the Millennials led</td><td class="v">Gen Z spent / Millennials led (але: the youngest group)</td></tr>
+      <tr><td>прийменники</td><td class="x">hours devoted for gaming</td><td class="v">hours devoted to gaming · data on · the figure for</td></tr>
+      <tr><td>тренд при одному році</td><td class="x">hours fell with age (2023)</td><td class="v">figures were lower among older groups</td></tr>
+      <tr><td>причини й думки</td><td class="x">…because they grew up with technology</td><td class="v">(не писати взагалі — Task 1 лише описує)</td></tr>
+      <tr><td>арикль перед table</td><td class="x">the most highest figure in table</td><td class="v">the highest figure in the table</td></tr>
+    </table>
+  </details>
+</div>
+
+<div class="rule">
+  <h3>Підсумок тренажера · що ти тепер вмієш</h3>
+  <ul>
+    <li><b>Introduction</b> — provides data on / compares; без «we can see».</li>
+    <li><b>Overview</b> — домінанта + виняток, нуль цифр; сильний фліп — у окремий абзац.</li>
+    <li><b>Групування</b> — respectively (порядок!), intermediate figures, мова винятків.</li>
+    <li><b>Множники</b> — чесна математика з десятковими; fold для змін у часі.</li>
+  </ul>
+  <p class="small" style="margin-top:10px;">Навіщо це далі: Тренажер 4 — три нові таблиці від 3×3 до 5×5, три рівні самостійності.</p>
+</div>
+
+</div>
+
+<script>
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function gateModel(btnId, taId, modelId, attId){
+  const btn=document.getElementById(btnId), ta=document.getElementById(taId), m=document.getElementById(modelId);
+  ta.addEventListener('input', function(){ btn.disabled = ta.value.trim().length < 25; });
+  btn.addEventListener('click', function(){
+    if(btn.disabled) return;
+    ta.readOnly=true; ta.classList.add('locked'); btn.disabled=true;
+    document.getElementById(attId).innerHTML='<div class="attempt"><span class="lbl">Твоя зафіксована спроба</span>'+esc(ta.value)+'</div>';
+    m.style.display='block'; m.scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
+}
+gateModel('b1','i1','m1','a1'); gateModel('b2','i2','m2','a2'); gateModel('b3','i3','m3','a3'); gateModel('bfx','fx','mfx','afx');
+
+/* ---- 3.2 overview ---- */
+const OVS = [
+  { s:"Overall, Gen Z recorded the highest figures for the newest forms of entertainment, by a considerable margin.",
+    opts:["Це нормальне overview-речення","Тут зайва цифра або дрібна деталь","Тут зайве пояснення чи інформація, якої немає в таблиці"], a:0,
+    w:"Саме так: домінанта + наскільки велика (by a considerable margin) — без жодної цифри." },
+  { s:"Overall, Boomers spent 11 hours a week on news websites.",
+    opts:["Це нормальне overview-речення","Тут зайва цифра або дрібна деталь","Тут зайве пояснення чи інформація, якої немає в таблиці"], a:1,
+    w:"Цифра у overview — порушення. Правильно: «news websites displayed a strikingly reversed pattern, with Boomers spending the most time on them»." },
+  { s:"Overall, streaming dominated listening habits in all five countries, while Japan stood out as a striking exception to the decline of physical media.",
+    opts:["Це нормальне overview-речення","Тут зайва цифра або дрібна деталь","Тут зайве пояснення чи інформація, якої немає в таблиці"], a:0,
+    w:"Саме так: універсальний рядок + виняток-країна. Обидві історії, нуль чисел." },
+  { s:"Overall, young people spent more time on gaming because they grew up with technology.",
+    opts:["Це нормальне overview-речення","Тут зайва цифра або дрібна деталь","Тут зайве пояснення чи інформація, якої немає в таблиці"], a:2,
+    w:"«because they grew up with technology» — причина, якої немає в таблиці. Думки заборонені." }
+];
+(function(){
+  document.getElementById('ov-items').innerHTML = OVS.map((o,i)=>
+    '<p style="font-size:15.5px; margin:14px 0 8px;"><b>'+(i+1)+'.</b> <i>'+o.s+'</i></p>'+
+    o.opts.map((t,j)=>'<label class="opt" id="oo-'+i+'-'+j+'" style="margin-bottom:6px;"><input type="radio" name="ov'+i+'" id="oi-'+i+'-'+j+'"><span>'+t+'<div class="why" id="ow-'+i+'-'+j+'"></div></span></label>').join('')
+  ).join('');
+})();
+function checkOV(){ let c=0;
+  OVS.forEach((o,i)=>o.opts.forEach((t,j)=>{ const lab=document.getElementById('oo-'+i+'-'+j), why=document.getElementById('ow-'+i+'-'+j);
+    lab.classList.remove('ok','bad'); why.innerHTML='';
+    if(document.getElementById('oi-'+i+'-'+j).checked){ const good=j===o.a; lab.classList.add(good?'ok':'bad'); why.innerHTML=(good?'✓ ':'✗ ')+o.w; if(good)c++; } }));
+  document.getElementById('ov-fb').innerHTML = c===4 ? '<span style="color:var(--green)">✓ 4 з 4. Overview-очі екзаменатора — твої.</span>' : '<span style="color:var(--red)">'+c+' з 4. Читай пояснення — і ще раз.</span>';
+}
+function resetOV(){ OVS.forEach((o,i)=>o.opts.forEach((t,j)=>{ document.getElementById('oi-'+i+'-'+j).checked=false; document.getElementById('oo-'+i+'-'+j).classList.remove('ok','bad'); document.getElementById('ow-'+i+'-'+j).innerHTML=''; })); document.getElementById('ov-fb').innerHTML=''; }
+
+/* ---- 3.3 drills ---- */
+const DRILLS = {
+ A: [
+  { q:'Gen X — 8 год, Millennials — 10 год (YouTube). Збери в одне речення.', opts: shuffle([
+    {t:'Gen X and Millennials recorded 8 and 10 hours on YouTube respectively.', ok:true, w:'Respectively: значення в тому ж порядку, що й групи. Gen X → 8, Millennials → 10. ✓'},
+    {t:'Gen X and Millennials recorded 10 and 8 hours on YouTube respectively.', ok:false, w:'Порядок переплутано! Respectively вимагає той самий порядок, що й групи.'},
+    {t:'Gen X and Millennials recorded 10 and 8 hours on YouTube respectfully.', ok:false, w:'Respectfully = «з повагою». Це інше слово — екзаменатори знають цю помилку напам\'ять.'}])},
+  { q:'Дві середні групи: 14% і 6% (content creation, 25–34 і 35–49).', opts: shuffle([
+    {t:'the two middle groups recorded intermediate figures of 14% and 6% respectively', ok:true, w:'Intermediate figures збирає середні клітинки в півречення — це і є відбір.'},
+    {t:'the two middle groups recorded 14% and 6%, which are not important', ok:false, w:'«not important» — твоє міркування, не мова звіту.'},
+    {t:'the 25–34 group had 14 and the 35–49 group had 6', ok:false, w:'Два речення-список = Band 5. Групуй!'}])},
+  { q:'Pet sitting: 50–65 лідирують (10%), а молоді — лише 3%. Це виняток.', opts: shuffle([
+    {t:'Pet and house sitting bucked the pattern entirely, led by the 50–65 group at 10%.', ok:true, w:'Bucked the pattern — дієслово винятку. Сильний фліп заслуговує на таку фразу.'},
+    {t:'Pet and house sitting was different.', ok:false, w:'«Was different» — нуль інформації. Назви виняток сильно.'},
+    {t:'Pet and house sitting was 3% for 18–24.', ok:false, w:'Цифра без контрасту — втрачена історія.'}])},
+  { q:'Downloads: 5, 5, 5, 8, 7 у п\'яти країнах. Рядок без історії.', opts: shuffle([
+    {t:'downloads recorded intermediate figures of 5–8% across all five countries', ok:true, w:'«Across all five countries» — п\'ять клітинок одним діапазоном. Найнудніший рядок закрито в півречення.'},
+    {t:'downloads were 5% in the USA, 5% in the UK, 5% in Germany, 8% in Japan and 7% in Brazil', ok:false, w:'Переписування таблиці вголос = Band 5. Екзаменатор і так має ці цифри.'},
+    {t:'downloads were not very interesting', ok:false, w:'«Not interesting» — не звіт, а оцінка. Дай діапазон.'}])}
+ ],
+ B: [
+  { q:'Бургери: 3.1 (18–24) vs 0.8 (55–70).', opts: shuffle([
+    {t:'nearly four times the figure for the over-55s', ok:true, w:'3.1÷0.8 = 3.875 → «nearly four times». Десяткові рахуються як звичайні.'},
+    {t:'three times the figure for the over-55s', ok:false, w:'3.875 — це не three. Заокруглюй чесно вгору з хеджем nearly.'},
+    {t:'four times more than the over-55s', ok:false, w:'Заборонена конструкція (times + more) і без «nearly» нечесно.'}])},
+  { q:'Суші: 1.8 (18–24) vs 0.2 (55–70).', opts: shuffle([
+    {t:'nine times the figure for 55–70 year olds', ok:true, w:'1.8÷0.2 = 9 рівно — точне ціле, хедж не потрібен.'},
+    {t:'nearly nine times the figure for 55–70 year olds', ok:false, w:'Коли математика чиста (рівно 9), «nearly» — непотрібне зменшення.'},
+    {t:'eight times more than 55–70 year olds', ok:false, w:'І число хибне, і конструкція заборонена.'}])},
+  { q:'Mobile payments: 3% (2013) → 64% (2023). Два роки.', opts: shuffle([
+    {t:'a more than twenty-fold increase', ok:true, w:'64÷3 = 21.3 → «more than twenty-fold». Для змін у часі — fold, не times.'},
+    {t:'more than twenty times more', ok:false, w:'Times + more — заборонено; і для часу правильний інструмент — fold.'},
+    {t:'nearly double', ok:false, w:'64 проти 3 — це не double. Множник мусить відповідати частці.'}])}
+ ],
+ C: [
+  { q:'«From the table we can see that Boomers spent the most time on news websites. (11 hrs)»', opts: shuffle([
+    {t:'Boomers topped the table for news websites, at 11 hours a week.', ok:true, w:'Topped the table + цифра. «From the table we can see» — калька, видалена повністю.'},
+    {t:'From the table we can see that Boomers topped the table for news websites.', ok:false, w:'Topped the table — добре, але калька лишилась. Видаляй повністю.'},
+    {t:'As we can see from the given table, Boomers were the highest in news.', ok:false, w:'«Given table» — штамп із зазубрювання; «highest in news» — неточно.'}])},
+  { q:'«Japan had 22% for CDs. This was nine times more than Brazil. (Brazil: 3%)»', opts: shuffle([
+    {t:'Japan stood out as the one country where CDs still mattered, at 22% — more than seven times the Brazilian figure of 3%.', ok:true, w:'Рамка винятку + чесний множник: 22÷3 = 7.3, не nine! Перебільшений множник — неточність даних.'},
+    {t:'Japan had 22% for CDs, which was nine times more than Brazil.', ok:false, w:'22÷3 = 7.3. «Nine times» — нечесна математика = мінус за Task Achievement.'},
+    {t:'Japan was the best country for CDs at 22%.', ok:false, w:'«Best country» — оцінка, а не дані; Бразилію втрачено.'}])},
+  { q:'«Young people spent more time on gaming because they grew up with technology.»', opts: shuffle([
+    {t:'Gen Z devoted 15 hours weekly to online gaming — more than seven times the Boomer figure of just 2 hours.', ok:true, w:'Причину видалено повністю (думки заборонені), додано чесний множник 15÷2=7.5.'},
+    {t:'Young people spent more time on gaming, which happened because of technology.', ok:false, w:'Причина лишилась у вигляді «which happened because». Task 1 описує дані, а не пояснює.'},
+    {t:'Gaming was popular among the young for technological reasons.', ok:false, w:'«Technological reasons» — те саме порушення у прихованій формі.'}])}
+ ]
+};
+function initDrills(){
+  Object.keys(DRILLS).forEach(k=>{
+    document.getElementById('drill'+k).innerHTML = DRILLS[k].map((d,i)=>
+      '<p style="font-size:15.5px; margin:14px 0 8px;"><b>'+(i+1)+'.</b> '+d.q+'</p>'+
+      d.opts.map((o,j)=>'<label class="opt" id="d'+k+'-'+i+'-'+j+'" style="margin-bottom:6px;"><input type="radio" name="d'+k+i+'" id="i'+k+'-'+i+'-'+j+'"><span>'+o.t+'<div class="why" id="w'+k+'-'+i+'-'+j+'"></div></span></label>').join('')
+    ).join('');
+  });
+}
+function checkDrill(k){ let c=0;
+  DRILLS[k].forEach((d,i)=>d.opts.forEach((o,j)=>{ const lab=document.getElementById('d'+k+'-'+i+'-'+j), why=document.getElementById('w'+k+'-'+i+'-'+j);
+    lab.classList.remove('ok','bad'); why.innerHTML='';
+    if(document.getElementById('i'+k+'-'+i+'-'+j).checked){ const good=o.ok; lab.classList.add(good?'ok':'bad'); why.innerHTML=(good?'✓ ':'✗ ')+o.w; if(good)c++; } }));
+  document.getElementById('fb'+k).innerHTML = c===DRILLS[k].length ? '<span style="color:var(--green)">✓ Усі '+c+'. Групуюча машина працює — саме вона і є мова таблиць.</span>' : '<span style="color:var(--red)">'+c+' з '+DRILLS[k].length+'. Читай пояснення до червоних — і ще раз.</span>';
+}
+function resetDrill(k){ DRILLS[k].forEach((d,i)=>d.opts.forEach((o,j)=>{ document.getElementById('i'+k+'-'+i+'-'+j).checked=false; document.getElementById('d'+k+'-'+i+'-'+j).classList.remove('ok','bad'); document.getElementById('w'+k+'-'+i+'-'+j).innerHTML=''; })); document.getElementById('fb'+k).innerHTML=''; }
+
+/* ---- 3.4 traps ---- */
+const TRAPS = [
+  { q:'«8 год (Gen X) і 10 год (Millennials), відповідно».', opts:['Gen X and Millennials recorded 10 and 8 hours respectfully.','Gen X and Millennials recorded 8 and 10 hours respectively.','Gen X and Millennials recorded 8 and 10 hours respectfully.'], a:1,
+    w:'Respectively = відповідно (порядок той самий!); respectfully = з повагою.'},
+  { q:'«З таблиці ми бачимо, що…»', opts:['From the table we can see that…','The table provides data on…','From the given table it can be seen that…'], a:1,
+    w:'Калька «we can see». Англійська таблиця сама provides data.'},
+  { q:'«У дев\'ять разів більше» (1.8 vs 0.2).', opts:['nine times more than','nine times the figure for','nine times bigger in'], a:1,
+    w:'Множник + the figure for. More після times — заборонено.'},
+  { q:'Назва групи в підметі.', opts:['The Gen Z spent 15 hours on gaming.','Gen Z spent 15 hours on gaming.','The Gen Z group spent 15 hours on gaming.'], a:1,
+    w:'Gen Z, Millennials — без «the», як імена. Але «the youngest group» — з the.'},
+  { q:'Прийменник: hours devoted ___ gaming.', opts:['devoted for gaming','devoted to gaming','devoted on gaming'], a:1,
+    w:'devoted to · data on · the figure for. Прийменник — частина дієслова.'},
+  { q:'Один рік (2023). Патерн за віком.', opts:['Hours fell with age.','Hours were lower among older groups.','Hours have fallen with age.'], a:1,
+    w:'Один рік не рухається. Порівняння груп — було (was lower); рух у часі — ні.'}
+];
+(function(){
+  document.getElementById('traps').innerHTML = TRAPS.map((t,i)=>
+    '<p style="font-size:15.5px; margin:14px 0 8px;"><b>'+(i+1)+'.</b> '+t.q+'</p>'+
+    shuffle(t.opts.map((o,idx)=>({o:o, idx:idx}))).map(x=>'<label class="opt" id="to-'+i+'-'+x.idx+'" style="margin-bottom:6px;"><input type="radio" name="t'+i+'" id="ti-'+i+'-'+x.idx+'"><span>'+x.o+'<div class="why" id="tw-'+i+'-'+x.idx+'"></div></span></label>').join('')
+  ).join('');
+})();
+function checkTraps(){ let c=0;
+  TRAPS.forEach((t,i)=>t.opts.forEach((o,j)=>{ const lab=document.getElementById('to-'+i+'-'+j), why=document.getElementById('tw-'+i+'-'+j);
+    lab.classList.remove('ok','bad'); why.innerHTML='';
+    if(document.getElementById('ti-'+i+'-'+j).checked){ const good=j===t.a; lab.classList.add(good?'ok':'bad'); why.innerHTML=(good?'✓ ':'✗ ')+t.w; if(good)c++; } }));
+  document.getElementById('traps-fb').innerHTML = c>=5 ? '<span style="color:var(--green)">✓ '+c+' з 6. Граматика тримана.</span>' : '<span style="color:var(--red)">'+c+' з 6. Таблиця пасток вище — і ще раз.</span>';
+}
+function resetTraps(){ TRAPS.forEach((t,i)=>t.opts.forEach((o,j)=>{ document.getElementById('ti-'+i+'-'+j).checked=false; document.getElementById('to-'+i+'-'+j).classList.remove('ok','bad'); document.getElementById('tw-'+i+'-'+j).innerHTML=''; })); document.getElementById('traps-fb').innerHTML=''; }
+
+initDrills();
+</script>
+</body>
+</html>

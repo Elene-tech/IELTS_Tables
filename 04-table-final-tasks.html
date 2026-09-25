@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажер 4 · Фінальні завдання — Tables</title>
+<style>
+:root{
+  --bg:#F7F5EC; --card:#FFFFFF; --ink:#22271E; --muted:#6E7468; --line:#E4E1D2;
+  --green:#1E5631; --green-soft:#E9F2E4;
+  --lime:#84CC16; --lime-soft:#F2F9E0;
+  --yellow:#FDE047;
+  --orange:#E8890C; --orange-soft:#FCF1DE;
+  --red:#B3402E; --red-soft:#F8E9E5;
+  --purple:#7A5AA0; --purple-soft:#F1ECF7;
+  --blue:#2E5A88;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; font-size:16.5px; line-height:1.6; padding:24px 16px 60px;}
+.wrap{max-width:980px; margin:0 auto;}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif; color:var(--green); line-height:1.25;}
+h1{font-size:30px; margin-bottom:6px;}
+h2{font-size:22px; margin:40px 0 14px;}
+h3{font-size:18px; margin:18px 0 10px;}
+.sub{color:var(--muted); font-size:14.5px; margin-bottom:20px;}
+mark{background:var(--yellow); padding:0 3px; border-radius:2px;}
+.bc{font-size:13px; color:var(--muted); margin-bottom:14px;}
+.bc b{color:var(--green);}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(30,60,30,.05);}
+.step-tag{display:inline-block; font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); background:var(--orange-soft); border:1px solid var(--orange); border-radius:20px; padding:3px 12px; margin-bottom:10px;}
+.instr{background:var(--green-soft); border:1.5px solid var(--green); border-radius:12px; padding:14px 16px; margin:12px 0; font-size:15.5px;}
+.instr .lbl{display:block; font-size:12px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--green); margin-bottom:6px;}
+.enhint{background:#EDF3F9; border:1.5px solid var(--blue); border-radius:12px; padding:12px 15px; margin:12px 0; font-size:14.5px;}
+.enhint .lbl{display:block; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--blue); margin-bottom:5px;}
+.btn{display:inline-block; border:none; border-radius:10px; padding:11px 18px; font-size:14.5px; font-weight:600; cursor:pointer; margin:6px 6px 0 0; font-family:inherit;}
+.btn-primary{background:var(--green); color:#fff;}
+.btn-ghost{background:transparent; border:1.5px solid var(--green); color:var(--green);}
+.btn-solution{background:transparent; border:1.5px solid var(--orange); color:var(--orange);}
+.btn:disabled{opacity:.4; cursor:not-allowed;}
+.btn:hover:not(:disabled){opacity:.85;}
+textarea{width:100%; border:1.5px solid var(--line); border-radius:10px; padding:13px 15px; font-size:16px; font-family:inherit; background:var(--card); color:var(--ink); resize:vertical;}
+textarea:focus{outline:none; border-color:var(--green);}
+textarea.locked{background:#F4F2E8; border-style:dashed;}
+.attempt{background:var(--purple-soft); border:1.5px solid var(--purple); border-radius:10px; padding:12px 15px; font-size:14.5px; margin-top:12px;}
+.attempt .lbl{display:block; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--purple); margin-bottom:5px;}
+.timer-row{display:flex; align-items:center; gap:16px; margin:10px 0 14px; flex-wrap:wrap;}
+#timer3{font-size:26px; font-weight:600; font-variant-numeric:tabular-nums; color:var(--green);}
+.wc{font-size:13px; color:var(--muted); margin-top:6px;}
+.chk{display:flex; gap:10px; align-items:flex-start; padding:11px 13px; border:1.5px solid var(--line); border-radius:10px; margin-bottom:7px; cursor:pointer; font-size:14.5px; background:var(--card);}
+.chk input{margin-top:3px; accent-color:var(--green); flex-shrink:0; width:17px; height:17px;}
+.model{display:none; margin-top:16px; border-left:3px solid var(--green); background:var(--green-soft); padding:14px 16px; border-radius:0 10px 10px 0; font-size:14.5px;}
+.model p{margin-bottom:10px;}
+.fb{margin-top:10px; font-size:15px; font-weight:600;}
+.divider{border:none; border-top:2px dashed var(--line); margin:40px 0;}
+.small{font-size:13.5px; color:var(--muted);}
+.tbl-box{overflow-x:auto; margin:12px 0;}
+table.tbl{width:100%; border-collapse:collapse; font-size:14.5px; background:#fff; min-width:460px;}
+.tbl th{background:var(--green-soft); color:var(--green); font-weight:600; padding:9px 12px; border:1px solid var(--line); text-align:center;}
+.tbl th:first-child{text-align:left;}
+.tbl td{padding:8px 12px; border:1px solid var(--line); text-align:center; font-variant-numeric:tabular-nums;}
+.tbl td:first-child{text-align:left; font-weight:600;}
+.tbl tr:nth-child(even) td{background:#FBFAF4;}
+@media (max-width:640px){
+  body{padding:16px 10px 44px; font-size:15.5px;}
+  h1{font-size:24px;} h2{font-size:19px;}
+  .card{padding:14px;}
+  .btn{padding:12px 16px;}
+  table.tbl{font-size:13px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="bc">Модуль 4 · Tables → <b>Тренажер 4 з 4</b></div>
+<h1>Фінальні завдання</h1>
+<p class="sub">Від простої таблиці (9 клітинок) до складної (25). Модель відкривається <mark>лише після твоєї здачі</mark> — спочатку пишеш, потім звіряєш.</p>
+
+<div class="card">
+  <span class="step-tag">Як це працює</span>
+  <p><b>Спроба 1 (з підказками)</b> — проста таблиця 3×3, відповідь по частинах. Без таймера.<br>
+  <b>Спроба 2 (лише групування)</b> — таблиця 4×4 з фліпом, одна підказка. Без таймера.<br>
+  <b>Спроба 3 (чистий іспит)</b> — таблиця 5×5, таймер 20:00, чек-лист перед моделлю. Перед письмом — постав питання кожній клітинці: «чи потрапиш ти в мою відповідь?»</p>
+</div>
+
+<!-- ==================== СПРОБА 1 ==================== -->
+<h2>Спроба 1 · Household spending, three categories, 2023</h2>
+<div class="card">
+  <p style="font-size:14.5px;"><i>The table below shows average weekly household spending (£) on three categories by three household types in 2023. Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.</i></p>
+  <div class="tbl-box"><table class="tbl"><tr><th>Category · £/week</th><th>Single-person</th><th>Couple (no children)</th><th>Family with children</th></tr><tr><td>Eating out</td><td>85</td><td>120</td><td>95</td></tr><tr><td>Groceries</td><td>65</td><td>110</td><td>160</td></tr><tr><td>Entertainment</td><td>40</td><td>55</td><td>70</td></tr></table><div class="tbl-caption">Average weekly household spending, 2023 (£)</div></div>
+
+  <div class="instr"><span class="lbl">Інструкція</span>Три кроки: introduction → overview → body. Спочатку читай англійську підказку, потім пиши. Після трьох частин відкриється повна модель.</div>
+
+  <h3>Крок 1 · Introduction</h3>
+  <div class="enhint"><span class="lbl">Hint</span>Paraphrase: «shows» → «compares»; name what is measured (average weekly spending in pounds), the three household types, the three categories and the year. No data.</div>
+  <textarea id="g1i" rows="2" placeholder="The table compares..."></textarea>
+  <button class="btn btn-solution" id="g1ib" disabled>Показати взірець</button>
+  <div id="g1ia"></div>
+  <div class="model" id="g1im"><p><b>Sample:</b> The table compares average weekly household spending, in pounds, on three categories by three household types in 2023.</p></div>
+
+  <h3>Крок 2 · Overview</h3>
+  <div class="enhint"><span class="lbl">Hint</span>Two stories, no numbers: (1) families with children dominate groceries; (2) couples lead on eating out, and single-person households are lowest everywhere.</div>
+  <textarea id="g1o" rows="3" placeholder="Overall, ..."></textarea>
+  <button class="btn btn-solution" id="g1ob" disabled>Показати взірець</button>
+  <div id="g1oa"></div>
+  <div class="model" id="g1om"><p><b>Sample:</b> Overall, families with children spent by far the most on groceries, while couples without children led on eating out. Single-person households recorded the lowest figures in every category.</p></div>
+
+  <h3>Крок 3 · Body 1 + Body 2</h3>
+  <div class="enhint"><span class="lbl">Hint · grouping</span>Body 1 = the big contrasts: groceries (families £160 vs singles £65 — «more than twice») and eating out (couples £120, then families £95 and singles £85 — «respectively»!). Body 2 = entertainment (families £70 vs £55 vs £40 — the closing comparison). One year → past simple, no trend verbs.</div>
+  <textarea id="g1b" rows="6" placeholder="Groceries accounted for the largest share of family spending..."></textarea>
+  <div class="wc" id="g1wc">0 слів</div>
+  <button class="btn btn-solution" id="g1bb" disabled>Показати взірець</button>
+  <div id="g1ba"></div>
+  <div class="model" id="g1bm">
+    <p><b>Sample Body 1:</b> Groceries accounted for the largest share of family spending, at £160 per week — more than twice the figure for single-person households (£65). Couples spent the most on eating out, at £120, with families and singles recording lower figures of £95 and £85 respectively.</p>
+    <p><b>Sample Body 2:</b> In terms of entertainment, families again led at £70 a week, compared with £55 for couples and just £40 for single-person households — the lowest figure in the entire table.</p>
+  </div>
+
+  <div id="full1-wrap" style="display:none; margin-top:18px;">
+    <button class="btn btn-primary" onclick="showFull1()">Показати повну модельну відповідь</button>
+    <div class="model" id="full1">
+      <p><b>§1</b> The table compares average weekly household spending, in pounds, on three categories by three household types in 2023.</p>
+      <p><b>§2</b> Overall, families with children spent by far the most on groceries, while couples without children led on eating out. Single-person households recorded the lowest figures in every category.</p>
+      <p><b>§3</b> Groceries accounted for the largest share of family spending, at £160 per week — more than twice the figure for single-person households (£65). Couples spent the most on eating out, at £120, with families and singles recording lower figures of £95 and £85 respectively.</p>
+      <p><b>§4</b> In terms of entertainment, families again led at £70 a week, compared with £55 for couples and just £40 for single-person households — the lowest figure in the entire table.</p>
+      <p class="small">Порівняй: respectively у правильному порядку? Чи є множник (more than twice)? Чи past simple без трендів?</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ==================== СПРОБА 2 ==================== -->
+<h2>Спроба 2 · Weekly hours on four sports, by age group, 2023</h2>
+<div class="card">
+  <p style="font-size:14.5px;"><i>The table below shows the average number of hours per week that four age groups spent on four sports in 2023. Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.</i></p>
+  <div class="tbl-box"><table class="tbl"><tr><th>Sport · hrs/week</th><th>18–24</th><th>25–39</th><th>40–54</th><th>55–70</th></tr><tr><td>Gym</td><td>4</td><td>5</td><td>3</td><td>1</td></tr><tr><td>Swimming</td><td>2</td><td>3</td><td>4</td><td>5</td></tr><tr><td>Running</td><td>3</td><td>4</td><td>2</td><td>1</td></tr><tr><td>Yoga & Pilates</td><td>1</td><td>2</td><td>3</td><td>4</td></tr></table><div class="tbl-caption">Weekly hours spent on four sports, by age group, 2023</div></div>
+
+  <div class="enhint"><span class="lbl">Єдина підказка · grouping</span>Два рядки падають з віком (gym, running — пік у середніх групах), два ростуть (swimming, yoga — фліп!). Body 1 = gym + running, Body 2 = swimming + yoga — відкривається «In contrast, …». Знайди фліп ДО письма.</div>
+
+  <div class="instr"><span class="lbl">Інструкція</span>Пиши всю відповідь одразу (§1–§4, 150+ слів). Без таймера. Після чек-листа відкриється модель.</div>
+  <textarea id="essay2" rows="9" placeholder="The table compares..."></textarea>
+  <div class="wc" id="wc2">0 слів (мінімум 150)</div>
+
+  <h3 style="margin-top:16px;">Чек-лист перед моделлю</h3>
+  <div id="chk2"></div>
+  <button class="btn btn-ghost" id="unlock2">Здати роботу · перевірити чек-лист</button>
+  <div class="fb" id="fb2"></div>
+
+  <div class="model" id="model2">
+    <p><b>§1</b> The table compares the average number of hours per week that four age groups spent on four sports in 2023.</p>
+    <p><b>§2</b> Overall, gym-going and running peaked in the middle age groups, while swimming and yoga showed a reversed pattern, becoming more popular with age.</p>
+    <p><b>§3</b> Gym attendance peaked among 25–39 year olds at 5 hours a week, with the youngest and oldest groups recording lower figures of 4 and 1 respectively. Running told a similar story, falling from 4 hours among 25–39 year olds to just 1 hour among the over-54s.</p>
+    <p><b>§4</b> In contrast, both swimming and yoga rose steadily across the age groups. Swimming increased from 2 hours a week among 18–24 year olds to 5 among the over-54s — the highest figure in its row — while yoga climbed from 1 to 4 hours over the same span.</p>
+    <p class="small">Порівняй: чи знайдено фліп ДО письма? Чи «told a similar story» з'єднує два рядки? Чи respectively у правильному порядку?</p>
+  </div>
+  <div id="rw2" style="display:none; margin-top:16px;">
+    <h3>Перепиши слабкий абзац</h3>
+    <p class="small" style="margin-bottom:8px;">Твоя здача залишається вище. Перепиши лише те, де чек-лист дав «ні».</p>
+    <textarea id="rewrite2" rows="4" placeholder="Виправлений абзац..."></textarea>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ==================== СПРОБА 3 ==================== -->
+<h2>Спроба 3 · Commuting in five cities, 2023 · exam conditions</h2>
+<div class="card">
+  <p style="font-size:14.5px;"><i>The table below shows how commuters in five cities travelled to work in 2023, as a percentage of all commutes. Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.</i></p>
+  <div class="tbl-box"><table class="tbl"><tr><th>Mode · %</th><th>City A</th><th>City B</th><th>City C</th><th>City D</th><th>City E</th></tr><tr><td>Car</td><td>44</td><td>38</td><td>25</td><td>50</td><td>30</td></tr><tr><td>Metro / train</td><td>30</td><td>25</td><td>20</td><td>15</td><td>28</td></tr><tr><td>Bus</td><td>12</td><td>18</td><td>15</td><td>20</td><td>14</td></tr><tr><td>Bicycle</td><td>6</td><td>10</td><td>35</td><td>5</td><td>9</td></tr><tr><td>On foot</td><td>8</td><td>9</td><td>5</td><td>10</td><td>19</td></tr></table><div class="tbl-caption">How commuters travelled to work, five cities, 2023 (%)</div></div>
+
+  <div class="instr"><span class="lbl">Інструкція · режим іспиту</span>3 хв — аналіз: знайди рядок-лідера, виняток-місто, найбільші розриви; виріши, які ~10 клітинок із 25 потраплять у текст. 15 хв — письмо. 2 хв — перевірка: respectively, чесні множники, жодного тренда (2023 — один рік).</div>
+
+  <div class="timer-row">
+    <button class="btn btn-primary" id="start3">Старт · 20:00</button>
+    <span id="timer3">20:00</span>
+  </div>
+
+  <textarea id="essay3" rows="9" placeholder="The table compares..."></textarea>
+  <div class="wc" id="wc3">0 слів (мінімум 150)</div>
+
+  <h3 style="margin-top:16px;">Чек-лист перед моделлю (усі 8 — чесно)</h3>
+  <div id="chk3"></div>
+  <button class="btn btn-ghost" id="unlock3">Здати роботу · перевірити чек-лист</button>
+  <div class="fb" id="fb3"></div>
+
+  <div class="model" id="model3">
+    <p><b>§1</b> The table compares how commuters in five cities travelled to work in 2023, as a percentage of all commutes.</p>
+    <p><b>§2</b> Overall, the car was the dominant mode in most cities, particularly City D. However, City C bucked this pattern, with the bicycle as its leading mode, while City E recorded the highest share of walking.</p>
+    <p><b>§3</b> City D relied on cars the most, at 50% of commutes — the highest figure in the table. Cities A and B showed similar profiles, with cars accounting for 44% and 38% respectively, and metro use at 30% and 25%. City C, in contrast, was the one city where bicycles led, at 35% — nearly six times the share in City A.</p>
+    <p><b>§4</b> City E stood out for sustainable travel more broadly: it combined the second-highest metro use, at 28%, with the highest walking figure, at 19%. Bus use remained broadly stable across all five cities, ranging from 12% to 20%.</p>
+    <p class="small">Порівняй рішення: ~10 клітинок з 25 у моделі. Які ти викинув? Чи respectively у правильному порядку (44 і 38 → A і B)? Чи «buck the pattern» для City C?</p>
+  </div>
+  <div id="rw3" style="display:none; margin-top:16px;">
+    <h3>Перепиши слабкий абзац</h3>
+    <p class="small" style="margin-bottom:8px;">Твоя іспитова спроба лишається вище.</p>
+    <textarea id="rewrite3" rows="4" placeholder="Виправлений абзац..."></textarea>
+  </div>
+</div>
+
+<div class="card" style="background:var(--lime-soft); border-color:var(--lime);">
+  <h3 style="margin-top:0;">Модуль 4 завершено 🎯</h3>
+  <p style="font-size:14.5px;">Три здачі — від 9 до 25 клітинок. Якщо в спробі 3 чек-лист дав 7–8 чесних «так» — ти вмієш те, що не вміють 90% кандидатів: ВИКИДАТИ зайве.</p>
+</div>
+
+</div>
+
+<script>
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+const done1 = { intro:false, overview:false, body:false };
+function guidedGate(btnId, taId, modelId, attId, key, wcId){
+  const btn=document.getElementById(btnId), ta=document.getElementById(taId), m=document.getElementById(modelId);
+  ta.addEventListener('input', function(){
+    btn.disabled = ta.value.trim().length < 25;
+    if(wcId){ const n=ta.value.trim().split(/\s+/).filter(Boolean).length; document.getElementById(wcId).textContent = n+' слів'; }
+  });
+  btn.addEventListener('click', function(){
+    if(btn.disabled) return;
+    ta.readOnly=true; ta.classList.add('locked'); btn.disabled=true;
+    document.getElementById(attId).innerHTML='<div class="attempt"><span class="lbl">Твоя зафіксована спроба</span>'+esc(ta.value)+'</div>';
+    m.style.display='block';
+    done1[key]=true;
+    if(done1.intro && done1.overview && done1.body){ document.getElementById('full1-wrap').style.display='block'; }
+  });
+}
+guidedGate('g1ib','g1i','g1im','g1ia','intro');
+guidedGate('g1ob','g1o','g1om','g1oa','overview');
+guidedGate('g1bb','g1b','g1bm','g1ba','body','g1wc');
+function showFull1(){ document.getElementById('full1').style.display='block'; }
+
+const CHECKS2 = [
+  'Overview є і без жодної цифри',
+  'Overview називає обидва патерни: пік у середніх + фліп (swimming/yoga)',
+  'Рівно 4 абзаци, кожен зі своєю роботою',
+  '§3 = gym + running, §4 = swimming + yoga (за поведінкою, не за порядком рядків)',
+  'Є respectively у правильному порядку',
+  'Past simple всюди (2023), жодного rose/fell'
+];
+const CHECKS3 = [
+  'Overview є і без жодної цифри',
+  'Overview називає: домінанту авто + виняток City C + City E walking',
+  'Рівно 4 абзаци, кожен зі своєю роботою',
+  'Використано ~половину клітинок (не переписана вся таблиця)',
+  'Є respectively у правильному порядку (44 і 38 → A і B)',
+  'Є хоча б один чесний множник (nearly six times…)',
+  'Past simple всюди, жодного тренда',
+  '150+ слів, встиг за 20 хвилин'
+];
+function buildChecklist(id, items){
+  document.getElementById(id).innerHTML = items.map(c=>'<label class="chk"><input type="checkbox" class="'+id+'-item"><span>'+c+'</span></label>').join('');
+}
+buildChecklist('chk2', CHECKS2);
+buildChecklist('chk3', CHECKS3);
+
+['essay2','essay3'].forEach((id,i)=>{
+  document.getElementById(id).addEventListener('input', function(){
+    const n = this.value.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('wc'+(i+2)).textContent = n + ' слів (мінімум 150)' + (n>=150?' ✓':'');
+  });
+});
+
+function setupUnlock(btnId, chkPrefix, modelId, fbId, wrapId, essayId){
+  document.getElementById(btnId).addEventListener('click', function(){
+    const items = document.querySelectorAll('.'+chkPrefix+'-item');
+    let cnt = 0;
+    items.forEach(c=>{ if(c.checked) cnt++; });
+    const fb = document.getElementById(fbId);
+    if(cnt === items.length){
+      const ta = document.getElementById(essayId);
+      ta.readOnly = true; ta.classList.add('locked');
+      document.getElementById(modelId).style.display='block';
+      document.getElementById(wrapId).style.display='block';
+      fb.innerHTML='<span style="color:var(--green)">✓ Роботу здано. Порівнюй свої рішення з моделлю — і перепиши слабке місце.</span>';
+      document.getElementById(modelId).scrollIntoView({behavior:'smooth', block:'start'});
+    } else {
+      fb.innerHTML='<span style="color:var(--red)">Відмічено '+cnt+' з '+items.length+'. Спершу чесна самоперевірка — потім модель.</span>';
+    }
+  });
+}
+setupUnlock('unlock2','chk2','model2','fb2','rw2','essay2');
+setupUnlock('unlock3','chk3','model3','fb3','rw3','essay3');
+
+let time3 = 1200, iv3 = null;
+document.getElementById('start3').addEventListener('click', function(){
+  if(iv3) return;
+  iv3 = setInterval(()=>{
+    time3--;
+    const m = Math.floor(time3/60), s = time3%60;
+    const el = document.getElementById('timer3');
+    el.textContent = m + ':' + (s<10?'0':'') + s;
+    if(time3<=0){ clearInterval(iv3); el.textContent='0:00 · час вийшов'; el.style.color='var(--red)'; }
+  },1000);
+  this.textContent='Таймер іде…'; this.style.opacity='.55'; this.disabled=true;
+});
+</script>
+</body>
+</html>
